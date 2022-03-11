@@ -1,16 +1,20 @@
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, Form } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
-  const emailRef = useRef();
+  const usernameRef = useRef();
   const passwordRef = useRef();
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   function onClick(e) {
     e.preventDefault();
-    if (emailRef.current.value && passwordRef.current.value) {
-      login(emailRef.current.value, passwordRef.current.value);
+    if (!(usernameRef.current.value || passwordRef.current.value)) return;
+
+    if (login(usernameRef.current.value, passwordRef.current.value)) {
+      navigate("/dashboard");
     }
   }
   return (
@@ -21,7 +25,7 @@ export default function Login() {
           <Form>
             <Form.Group>
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
+              <Form.Control type="text" ref={usernameRef} required />
             </Form.Group>
             <Form.Group>
               <Form.Label>Password</Form.Label>

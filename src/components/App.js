@@ -2,6 +2,7 @@ import AuthProvider from "contexts/AuthContext.js";
 import React from "react";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Dashboard from "./Dashboard.js";
 import Login from "./Login.js";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </AuthProvider>
         </Router>
