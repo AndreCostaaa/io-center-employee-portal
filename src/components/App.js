@@ -7,6 +7,7 @@ import CreateClient from "./CreateClient.js";
 import CreateService from "./CreateService.js";
 import Dashboard from "./Dashboard.js";
 import Login from "./Login.js";
+import Search from "./Search.js";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/create-client" element={<CreateClient />} />
               <Route path="/create-car" element={<CreateCar />} />
               <Route path="/create-service" element={<CreateService />} />
+              <Route path="/search" element={<Search />} />
             </Routes>
           </AuthProvider>
         </Router>

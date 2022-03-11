@@ -44,7 +44,7 @@ export default function CreateClient() {
             </Form.Group>
             <Button
               onClick={() => {
-                navigate("/dashboard");
+                navigate("/create-car");
               }}
               className="w-100 mt-3"
               type="submit"

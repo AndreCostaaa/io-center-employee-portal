@@ -12,7 +12,7 @@ export default function Login() {
 
   function onClick(e) {
     e.preventDefault();
-    if (usernameRef && !usernameRef.current.value) {
+    if (!usernameRef.current.value) {
       setError("Username");
       usernameRef.current.focus();
       return;

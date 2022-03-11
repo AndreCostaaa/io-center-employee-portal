@@ -30,23 +30,13 @@ export default function Dashboard() {
               className="w-100 mt-2  float-right"
               type="submit"
             >
-              Nouveau Client
+              Nouveau
             </Button>
             <Button
-              onClick={() => navigate("/create-car")}
-              className="w-100 mt-2 float-right"
+              onClick={() => navigate("/search")}
+              className="w-100 mt-2"
               type="submit"
             >
-              Nouvelle Voiture
-            </Button>
-            <Button
-              onClick={() => navigate("/create-service")}
-              className="w-100 mt-2 float-right"
-              type="submit"
-            >
-              Nouveau Service
-            </Button>
-            <Button onClick={onClick} className="w-100 mt-2" type="submit">
               Rechercher
             </Button>
           </Form>

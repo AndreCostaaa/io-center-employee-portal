@@ -42,9 +42,13 @@ export default function CreateClient() {
               <Form.Label>Carte Grise</Form.Label>
               <Form.Control type="file" />
             </Form.Group>
+            <Form.Group>
+              <Form.Label>Photos</Form.Label>
+              <Form.Control type="file" multiple />
+            </Form.Group>
             <Button
               onClick={() => {
-                navigate("/dashboard");
+                navigate("/create-service");
               }}
               className="w-100 mt-3"
               type="submit"
