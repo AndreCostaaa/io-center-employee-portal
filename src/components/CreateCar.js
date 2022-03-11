@@ -34,7 +34,6 @@ export default function CreateClient() {
               <Form.Label>Reception par Type</Form.Label>
               <Form.Control type="text"></Form.Control>
             </Form.Group>
-
             <Form.Group>
               <Form.Label>Première Mise en Circulation</Form.Label>
               <Form.Control type="date"></Form.Control>

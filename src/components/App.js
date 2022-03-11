@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CreateCar from "./CreateCar.js";
 import CreateClient from "./CreateClient.js";
+import CreateService from "./CreateService.js";
 import Dashboard from "./Dashboard.js";
 import Login from "./Login.js";
 
@@ -23,6 +24,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/create-client" element={<CreateClient />} />
               <Route path="/create-car" element={<CreateCar />} />
+              <Route path="/create-service" element={<CreateService />} />
             </Routes>
           </AuthProvider>
         </Router>

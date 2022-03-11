@@ -40,7 +40,7 @@ export default function Dashboard() {
               Nouvelle Voiture
             </Button>
             <Button
-              onClick={onClick}
+              onClick={() => navigate("/create-service")}
               className="w-100 mt-2 float-right"
               type="submit"
             >
