@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
@@ -8,9 +8,10 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    /*
     if (!currentUser) {
       navigate("/login");
-    }
+    }*/
   });
 
   function onClick(e) {
@@ -30,6 +31,13 @@ export default function Dashboard() {
               type="submit"
             >
               Nouveau Client
+            </Button>
+            <Button
+              onClick={() => navigate("/create-car")}
+              className="w-100 mt-2 float-right"
+              type="submit"
+            >
+              Nouvelle Voiture
             </Button>
             <Button
               onClick={onClick}

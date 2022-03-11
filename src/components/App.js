@@ -2,6 +2,7 @@ import AuthProvider from "contexts/AuthContext.js";
 import React from "react";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CreateCar from "./CreateCar.js";
 import CreateClient from "./CreateClient.js";
 import Dashboard from "./Dashboard.js";
 import Login from "./Login.js";
@@ -17,9 +18,11 @@ function App() {
         <Router>
           <AuthProvider>
             <Routes>
+              <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/create-client" element={<CreateClient />} />
+              <Route path="/create-car" element={<CreateCar />} />
             </Routes>
           </AuthProvider>
         </Router>

@@ -10,37 +10,38 @@ export default function CreateClient() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Formulaire Nouveau Client</h2>
+          <h2 className="text-center mb-4">Formulaire Nouvelle Voiture</h2>
           <Form>
-            <Form.Group>
-              <Form.Label>Prénom</Form.Label>
-              <Form.Control type="text" ref={prenomRef} />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Nom</Form.Label>
-              <Form.Control type="text" ref={nomRef}></Form.Control>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Adresse</Form.Label>
-              <Form.Control type="text"></Form.Control>
-            </Form.Group>
             <Row>
               <Form.Group as={Col}>
-                <Form.Label>NPA</Form.Label>
-                <Form.Control type="text"></Form.Control>
+                <Form.Label>Marque</Form.Label>
+                <Form.Control type="text" ref={prenomRef} />
               </Form.Group>
               <Form.Group as={Col}>
-                <Form.Label>Localité</Form.Label>
-                <Form.Control type="text"></Form.Control>
+                <Form.Label>Modèle</Form.Label>
+                <Form.Control type="text" ref={nomRef} />
               </Form.Group>
             </Row>
-            <Form.Group>
-              <Form.Label>E-mail</Form.Label>
-              <Form.Control type="email"></Form.Control>
+            <Form.Group as={Col}>
+              <Form.Label>Plaque</Form.Label>
+              <Form.Control type="text"></Form.Control>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Mobile</Form.Label>
+              <Form.Label>Numero de Chassis</Form.Label>
               <Form.Control type="text"></Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Reception par Type</Form.Label>
+              <Form.Control type="text"></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Première Mise en Circulation</Form.Label>
+              <Form.Control type="date"></Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Carte Grise</Form.Label>
+              <Form.Control type="file" />
             </Form.Group>
             <Button
               onClick={() => {
