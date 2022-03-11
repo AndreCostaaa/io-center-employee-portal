@@ -2,6 +2,7 @@ import AuthProvider from "contexts/AuthContext.js";
 import React from "react";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CreateClient from "./CreateClient.js";
 import Dashboard from "./Dashboard.js";
 import Login from "./Login.js";
 
@@ -12,12 +13,13 @@ function App() {
       style={{ minHeight: "100vh" }}
     >
       <div className="w=100" style={{ maxWidth: "600px" }}>
-        <h1>IO Center Employee Portal</h1>
+        <h1 className="mb-5">IO Center Employee Portal</h1>
         <Router>
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/create-client" element={<CreateClient />} />
             </Routes>
           </AuthProvider>
         </Router>
