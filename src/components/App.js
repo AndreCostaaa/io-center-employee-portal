@@ -7,6 +7,7 @@ import CreateCar from "./CreateCar.js";
 import CreateClient from "./CreateClient.js";
 import CreateService from "./CreateService.js";
 import Dashboard from "./Dashboard.js";
+import Details from "./Details.js";
 import Login from "./Login.js";
 import Search from "./Search.js";
 import SearchResults from "./SearchResults.js";
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/create-service" element={<CreateService />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/search-results" element={<SearchResults />} />
+                <Route path="/detail-page" element={<Details />} />
               </Routes>
             </DataProvider>
           </AuthProvider>

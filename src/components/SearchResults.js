@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 import SearchResult from "./SearchResult";
 
 export default function SearchResults() {
-  const [idSelected, setIdSelected] = useState(0);
   const navigate = useNavigate();
-  const { searchResults } = useData();
-  const kTableHeader = ["#", "Prénom", "Adresse", "Marque", "Plaque"];
+  const { searchResults, setId, id } = useData();
+  const kTableHeader = ["#", "Nom", "Adresse", "Marque", "Plaque"];
 
   useEffect(() => {}, []);
   return (
@@ -28,35 +27,44 @@ export default function SearchResults() {
                 <tr
                   key={index}
                   className={
-                    (index + 1 === idSelected ? "table-active" : "") +
-                    " text-center"
+                    (index + 1 === id ? "table-active" : "") + " text-center"
                   }
                   onClick={() => {
-                    let id = index + 1;
-                    if (idSelected === id) {
-                      setIdSelected(0);
+                    let selected = index + 1;
+                    if (id === selected) {
+                      setId(0);
                       return;
                     }
-                    setIdSelected(index + 1);
+                    setId(selected);
                   }}
-                ></tr>
+                >
+                  <SearchResult props={value}></SearchResult>
+                </tr>
               );
             })}
         </tbody>
       </Table>
-      <Card className="mt-2">
-        <Card.Body>
-          <Row className="gx-1">
-            <Button onClick={() => {}} className="w-50 border">
-              Détails
-            </Button>
-            <Button onClick={() => {}} className="w-50 border">
-              Nouveau Service
-            </Button>
-          </Row>
-        </Card.Body>
-      </Card>
-      <h1>{idSelected}</h1>
+      {id ? (
+        <Card className="mt-2">
+          <Card.Body>
+            <Row className="gx-1">
+              <Button
+                onClick={() => {
+                  navigate("/detail-page");
+                }}
+                className="w-50 border"
+              >
+                Détails
+              </Button>
+              <Button onClick={() => {}} className="w-50 border">
+                Nouveau Service
+              </Button>
+            </Row>
+          </Card.Body>
+        </Card>
+      ) : (
+        ""
+      )}
     </>
   );
 }

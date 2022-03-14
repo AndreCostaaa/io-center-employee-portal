@@ -161,11 +161,12 @@ export default function Search() {
                 <Form.Label>NPA</Form.Label>
                 <Form.Control
                   type="text"
-                  onChange={(e) =>
-                    isNan(e.target.value) ? setNpa(e.target.value) : ""
-                  }
-                  defaultValue={npa}
-                  pattern="[0-9]+"
+                  onChange={(e) => {
+                    if (!isNaN(e.target.value)) {
+                      setNpa(e.target.value);
+                    }
+                  }}
+                  value={npa}
                 />
               </Form.Group>
             </Row>
@@ -174,8 +175,12 @@ export default function Search() {
                 <Form.Label>Mobile</Form.Label>
                 <Form.Control
                   type="text"
-                  onChange={(e) => setMobile(e.target.value)}
-                  defaultValue={mobile}
+                  onChange={(e) => {
+                    if (!isNaN(e.target.value)) {
+                      setMobile(e.target.value);
+                    }
+                  }}
+                  value={mobile}
                 />
               </Form.Group>
 

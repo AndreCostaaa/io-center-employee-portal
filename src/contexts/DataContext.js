@@ -9,53 +9,53 @@ export default function DataProvider({ children }) {
   const [carSelected, setCarSelected] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [data, setData] = useState(null);
-
+  const [id, setId] = useState(0);
   function getAllData() {
     return [
       {
         id: 1,
-        name: "André Costa\n0786308274",
-        //lastName: "Costa",
-        address: "Pra Derrey 5A 1745",
-        //npa: "1745",
-        //mobile: "0786308274",
-        brand: "Abarth Punto",
+        name: "André",
+        lastName: "Costa",
+        address: "Pra Derrey 5A",
+        npa: "1745",
+        mobile: "0786308274",
+        brand: "Abarth",
         licensePlate: "FR 365490",
-
-        //model: "Punto",
+        model: "Punto",
       },
       {
         id: 2,
-        name: "Antonio Albuquerque\n0786308274",
-        //lastName: "Costa",
-        address: "Pra Derrey 5A 1745",
-        //npa: "1745",
-        //mobile: "0786308274",
-        brand: "Abarth Punto",
+        name: "Antonio",
+        lastName: "Albuquerque",
+        address: "Faubourg du Lac 43",
+        npa: "2000",
+        mobile: "0786308274",
+        brand: "Honda",
         licensePlate: "FR 365490",
-
-        //model: "Punto",
+        model: "CSV",
       },
       {
         id: 3,
-        name: "Matus Lissy",
-        //lastName: "Costa",
-        address: "Espace de L'Europe 1-3 2000",
-        //npa: "1745",
-        //mobile: "0786308274",
-        brand: "Giruno",
-        licensePlate: "NE 123456",
-
-        //model: "Punto",
+        name: "Mario",
+        lastName: "Matthey",
+        address: "Rte des Chavannes 31",
+        npa: "1680",
+        mobile: "0786308274",
+        brand: "Audi",
+        licensePlate: "FR 365490",
+        model: "RS6",
       },
     ];
   }
+
   const value = {
     carSelected,
     setCarSelected,
     searchResults,
     setSearchResults,
     getAllData,
+    id,
+    setId,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
