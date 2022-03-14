@@ -161,8 +161,11 @@ export default function Search() {
                 <Form.Label>NPA</Form.Label>
                 <Form.Control
                   type="text"
-                  onChange={(e) => setNpa(e.target.value)}
+                  onChange={(e) =>
+                    isNan(e.target.value) ? setNpa(e.target.value) : ""
+                  }
                   defaultValue={npa}
+                  pattern="[0-9]+"
                 />
               </Form.Group>
             </Row>
