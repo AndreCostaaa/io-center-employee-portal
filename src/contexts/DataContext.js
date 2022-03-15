@@ -22,6 +22,28 @@ export default function DataProvider({ children }) {
         brand: "Abarth",
         licensePlate: "FR 365490",
         model: "Punto",
+        city: "Lentigny",
+        email: "email@gmail.com",
+        releaseDate: "15/03/2022",
+        chassisNo: "ZF A35 000 000 134 240",
+        color: "black",
+        receptionType: "1FB2 54",
+        servicesList: [
+          {
+            date: "14/03/2022",
+            user: "mario",
+            km: "35750",
+            descriptif: "changement de filtres",
+            type: "Service",
+          },
+          {
+            date: "16/03/2022",
+            user: "diogo",
+            km: "35900",
+            descriptif: "changement de pare-chocs",
+            type: "Réparation",
+          },
+        ],
       },
       {
         id: 2,

@@ -2,7 +2,12 @@ import AuthProvider from "contexts/AuthContext.js";
 import DataProvider from "contexts/DataContext.js";
 import React from "react";
 import { Container } from "react-bootstrap";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import CreateCar from "./CreateCar.js";
 import CreateClient from "./CreateClient.js";
 import CreateService from "./CreateService.js";
@@ -18,8 +23,8 @@ function App() {
       className=" d-flex align-items-top justify-content-center"
       style={{ minHeight: "100vh" }}
     >
-      <div className="w=100" style={{ maxWidth: "600px" }}>
-        <h1 className="mb-5">IO Center Employee Portal</h1>
+      <div className="w=100" style={{}}>
+        <h1 className="mb-2">IO Center Employee Portal</h1>
         <Router>
           <AuthProvider>
             <DataProvider>
