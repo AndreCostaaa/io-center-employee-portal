@@ -20,11 +20,11 @@ import SearchResults from "./SearchResults.js";
 function App() {
   return (
     <Container
-      className=" d-flex align-items-top justify-content-center"
+      className=" d-flex align-items-center justify-content-center"
       style={{ minHeight: "100vh" }}
     >
       <div className="w=100" style={{}}>
-        <h1 className="mb-2">IO Center Employee Portal</h1>
+        <h1 className="mb-5">IO Center Employee Portal</h1>
         <Router>
           <AuthProvider>
             <DataProvider>
@@ -34,7 +34,6 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/create-client" element={<CreateClient />} />
                 <Route path="/create-car" element={<CreateCar />} />
-
                 <Route path="/create-service" element={<CreateService />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/search-results" element={<SearchResults />} />

@@ -1,15 +1,51 @@
+import axios from "axios";
 import React, { useContext, useState } from "react";
-
+import { useAuth } from "./AuthContext";
 export const DataContext = React.createContext(null);
 
 export function useData() {
   return useContext(DataContext);
 }
 export default function DataProvider({ children }) {
+  const { currentUser } = useAuth();
   const [carSelected, setCarSelected] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [data, setData] = useState(null);
   const [id, setId] = useState(0);
+  async function createClient(
+    name,
+    lastName,
+    address,
+    city,
+    npa,
+    phoneNumber,
+    email
+  ) {
+    let fd = new FormData();
+
+    fd.append("name", name);
+    fd.append("last_name", lastName);
+    fd.append("address", address);
+    fd.append("city", city);
+    fd.append("npa", npa);
+    fd.append("phone_number", phoneNumber);
+    fd.append("email_address", email);
+
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.access_token}` },
+    };
+    await axios
+      .post(process.env.REACT_APP_API_CLIENT_END_POINT, fd, config)
+      .then((res) => {
+        let data = res.data;
+        console.log(data);
+        return true;
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        return false;
+      });
+  }
   function getAllData() {
     return [
       {
@@ -78,6 +114,7 @@ export default function DataProvider({ children }) {
     getAllData,
     id,
     setId,
+    createClient,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

@@ -20,7 +20,9 @@ export default function Dashboard() {
   }
   return (
     <>
-      <h1>Hello {currentUser && currentUser.username}</h1>
+      <h3 className="text-center ">
+        Hello {currentUser && currentUser.name.split(" ")[0] + " :)"}
+      </h3>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Dashboard </h2>
@@ -28,15 +30,10 @@ export default function Dashboard() {
             <Button
               onClick={() => navigate("/create-client")}
               className="w-100 mt-2  float-right"
-              type="submit"
             >
               Nouveau
             </Button>
-            <Button
-              onClick={() => navigate("/search")}
-              className="w-100 mt-2"
-              type="submit"
-            >
+            <Button onClick={() => navigate("/search")} className="w-100 mt-2">
               Rechercher
             </Button>
           </Form>
