@@ -3,8 +3,8 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 import Service from "./Service";
 export default function DetailClient() {
-  const { getAllData, id } = useData();
-  const [data, setData] = useState(getAllData()[id - 1]);
+  const { id } = useData();
+  const [data, setData] = useState();
   const [visible, setVisible] = useState(true);
 
   return (

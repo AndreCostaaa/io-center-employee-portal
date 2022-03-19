@@ -44,7 +44,6 @@ export default function CreateClient() {
     if (
       await createClient(name, lastName, address, city, npa, email, phoneNumber)
     ) {
-      navigate("/create-car");
     }
   }
   async function handleSearch(e) {

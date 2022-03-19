@@ -71,6 +71,7 @@ export default function DataProvider({ children }) {
     setId,
     createClient,
     clientSelected,
+    carSelected,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

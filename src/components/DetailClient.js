@@ -3,8 +3,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailClient() {
-  const { getAllData, id } = useData();
-  const [data, setData] = useState(getAllData()[id - 1]);
+  const { clientSelected } = useData();
   const [visible, setVisible] = useState(true);
   return (
     <Card>
@@ -17,22 +16,24 @@ export default function DetailClient() {
             <tbody>
               <tr>
                 <td>
-                  <h5>{data.name + " " + data.lastName}</h5>
+                  <h5>
+                    {clientSelected.name + " " + clientSelected.last_name}
+                  </h5>
                 </td>
                 <td>
-                  <h6 className="mt-1">{data.mobile}</h6>
+                  <h6 className="mt-1">{clientSelected.mobile}</h6>
                 </td>
               </tr>
               <tr>
                 <td>
                   <h6>
-                    {data.address}
+                    {clientSelected.address}
                     <br />
-                    {data.city + " " + data.npa}
+                    {clientSelected.city + " " + clientSelected.npa}
                   </h6>
                 </td>
                 <td>
-                  <h6>{data.email}</h6>
+                  <h6>{clientSelected.email}</h6>
                 </td>
               </tr>
             </tbody>

@@ -58,8 +58,10 @@ export default function AuthProvider({ children }) {
         setCurrentUser(storedUser);
         return { status: true, message: "Token is valid" };
       case 401:
+        logout();
         return { status: false, message: "Token is invalid. Log in" };
       default:
+        logout();
         return { status: false, message: "Unknown Error" };
     }
   }
