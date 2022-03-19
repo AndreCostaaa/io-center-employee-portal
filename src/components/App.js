@@ -7,6 +7,7 @@ import {
   Route,
   Routes,
   useNavigate,
+  Link,
 } from "react-router-dom";
 import CreateCar from "./CreateCar.js";
 import CreateClient from "./CreateClient.js";
@@ -37,7 +38,7 @@ function App() {
                 <Route path="/create-service" element={<CreateService />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/search-results" element={<SearchResults />} />
-                <Route path="/detail-page" element={<Details />} />
+                <Route path="/detail-page" element={<Details />} />{" "}
               </Routes>
             </DataProvider>
           </AuthProvider>

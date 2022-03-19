@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api_get, api_post } from "../api/api";
 import React, { useContext, useState } from "react";
 import { useAuth } from "./AuthContext";
 export const DataContext = React.createContext(null);
@@ -12,6 +12,7 @@ export default function DataProvider({ children }) {
   const [searchResults, setSearchResults] = useState(null);
   const [data, setData] = useState(null);
   const [id, setId] = useState(0);
+  const [clientSelected, setClientSelected] = useState(null);
   async function createClient(
     name,
     lastName,
@@ -32,89 +33,44 @@ export default function DataProvider({ children }) {
     fd.append("email_address", email);
 
     const config = {
-      headers: { Authorization: `Bearer ${currentUser.access_token}` },
+      headers: {
+        Authorization: `Bearer ${currentUser ? currentUser.token : ""}`,
+      },
     };
-    await axios
-      .post(process.env.REACT_APP_API_CLIENT_END_POINT, fd, config)
-      .then((res) => {
-        let data = res.data;
-        console.log(data);
-        return true;
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        return false;
-      });
-  }
-  function getAllData() {
-    return [
-      {
-        id: 1,
-        name: "André",
-        lastName: "Costa",
-        address: "Pra Derrey 5A",
-        npa: "1745",
-        mobile: "0786308274",
-        brand: "Abarth",
-        licensePlate: "FR 365490",
-        model: "Punto",
-        city: "Lentigny",
-        email: "email@gmail.com",
-        releaseDate: "15/03/2022",
-        chassisNo: "ZF A35 000 000 134 240",
-        color: "black",
-        receptionType: "1FB2 54",
-        servicesList: [
-          {
-            date: "14/03/2022",
-            user: "mario",
-            km: "35750",
-            descriptif: "changement de filtres",
-            type: "Service",
-          },
-          {
-            date: "16/03/2022",
-            user: "diogo",
-            km: "35900",
-            descriptif: "changement de pare-chocs",
-            type: "Réparation",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Antonio",
-        lastName: "Albuquerque",
-        address: "Faubourg du Lac 43",
-        npa: "2000",
-        mobile: "0786308274",
-        brand: "Honda",
-        licensePlate: "FR 365490",
-        model: "CSV",
-      },
-      {
-        id: 3,
-        name: "Mario",
-        lastName: "Matthey",
-        address: "Rte des Chavannes 31",
-        npa: "1680",
-        mobile: "0786308274",
-        brand: "Audi",
-        licensePlate: "FR 365490",
-        model: "RS6",
-      },
-    ];
-  }
+    const res = await api_post(
+      process.env.REACT_APP_API_CLIENT_END_POINT,
+      config,
+      fd
+    );
 
+    switch (res.status) {
+      case 201:
+        if (!res.data.id) {
+          return {
+            status: false,
+            message: "Server Error. Contact Server Administrator",
+          };
+        }
+        console.log(res.data);
+        setClientSelected(res.data);
+        return { status: true, message: "Created!" };
+      case 401:
+        return { status: false, message: "Session expired. Log in" };
+      case 500:
+        return { status: false, message: "Server Error. Try again" };
+      default:
+        return { status: false, message: "Unknown Error. Try again" };
+    }
+  }
   const value = {
     carSelected,
     setCarSelected,
     searchResults,
     setSearchResults,
-    getAllData,
     id,
     setId,
     createClient,
+    clientSelected,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

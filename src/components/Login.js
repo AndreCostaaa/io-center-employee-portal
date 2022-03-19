@@ -4,7 +4,8 @@ import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
-  const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
+  const [infoType, setInfoType] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login, verifyStoredToken } = useAuth();
@@ -16,26 +17,31 @@ export default function Login() {
         navigate("/dashboard");
       }
     };
-    console.log("fetching data");
 
     fetchData();
   }, []);
   async function onClick(e) {
     e.preventDefault();
     if (!username) {
-      setError("Username required");
+      setInfo("Username required");
+      setInfoType("danger");
       return;
     }
     if (!password) {
-      setError("Password required");
+      setInfo("Password required");
+      setInfoType("danger");
       return;
     }
-    setError("Logging In");
-    console.log(await login(username, password));
-    if (await login(username, password)) {
+    setInfo("Logging in...");
+    setInfoType("info");
+    let response = await login(username, password);
+    if (response.status) {
+      setInfo("Login successful. Redirecting...");
+      setInfoType("info");
       navigate("/dashboard");
     } else {
-      setError("Username or password do not match");
+      setInfo(response.message);
+      setInfoType("danger");
     }
   }
 
@@ -44,7 +50,7 @@ export default function Login() {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Login</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
+          {info && <Alert variant={infoType}>{info}</Alert>}
           <Form>
             <Form.Group>
               <Form.Label>Username</Form.Label>
