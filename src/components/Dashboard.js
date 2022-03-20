@@ -4,14 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function Dashboard() {
-  const { currentUser, logout } = useContext(AuthContext);
+  const { currentUser, logout, verifyStoredToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
-      navigate("/login");
-    }
-  });
+    const fetchData = async () => {
+      if (!(await verifyStoredToken())) {
+        navigate("/login");
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <Card>
@@ -22,7 +26,7 @@ export default function Dashboard() {
           </h3>
           <Row className="gx-2 mt-4">
             <Button
-              onClick={() => navigate("/create-client")}
+              onClick={() => navigate("/new")}
               className="w-50 mt-2 border"
               as={Col}
             >

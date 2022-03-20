@@ -1,13 +1,21 @@
 import axios from "axios";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-export default function CreateClient() {
+import { useData } from "contexts/DataContext";
+export default function SelectCar() {
   const prenomRef = useRef();
   const nomRef = useRef();
   const registrationRef = useRef();
   const navigate = useNavigate();
+  const { clientSelected, getCarsFromClient } = useData();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getCarsFromClient(clientSelected.id)
+    };
+
+    fetchData();
+  }, []);
   async function handleSubmit(e) {
     e.preventDefault();
 

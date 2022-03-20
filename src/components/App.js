@@ -9,8 +9,8 @@ import {
   useNavigate,
   Link,
 } from "react-router-dom";
-import CreateCar from "./CreateCar.js";
-import CreateClient from "./CreateClient.js";
+import SelectCar from "./SelectCar.js";
+import SelectClient from "./SelectClient.js";
 import CreateService from "./CreateService.js";
 import Dashboard from "./Dashboard.js";
 import Details from "./Details.js";
@@ -33,12 +33,12 @@ function App() {
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/create-client" element={<CreateClient />} />
-                <Route path="/create-car" element={<CreateCar />} />
+                <Route path="/create-client" element={<SelectClient />} />
+                <Route path="/create-car" element={<SelectCar />} />
                 <Route path="/create-service" element={<CreateService />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/search-results" element={<SearchResults />} />
-                <Route path="/detail-page" element={<Details />} />{" "}
+                <Route path="/new" element={<Details />} />{" "}
               </Routes>
             </DataProvider>
           </AuthProvider>
