@@ -11,14 +11,15 @@ export async function api_get(url, config) {
     });
   return result;
 }
-export async function api_post(url, config, data) {
+export async function api_post(url, data, config) {
   const result = await axios
     .post(url, data, config)
-    .then((response) => {
-      return { status: response.status, data: response.data };
+    .then(function (res) {
+      console.log(res);
+      //console.log(res.data);
     })
-    .catch((error) => {
-      return { status: error.response.status };
+    .catch(function (error) {
+      console.log(error.toJSON());
     });
   return result;
 }

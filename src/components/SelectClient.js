@@ -38,7 +38,6 @@ export default function SelectClient() {
     if (!clients) {
       return;
     }
-    console.log("hello");
     setClientsToDisplay(
       clients.filter((element) => {
         if (
@@ -52,25 +51,37 @@ export default function SelectClient() {
         ) {
           return false;
         }
-        if (name && !element.name.includes(name)) {
+        if (name.toLowerCase() && !element.name.includes(name).toLowerCase()) {
           return false;
         }
-        if (lastName && !element.last_name.includes(lastName)) {
+        if (
+          lastName.toLowerCase() &&
+          !element.last_name.includes(lastName).toLowerCase()
+        ) {
           return false;
         }
-        if (address && !element.address.includes(address)) {
+        if (
+          address.toLowerCase() &&
+          !element.address.includes(address).toLowerCase()
+        ) {
           return false;
         }
-        if (city && !element.city.includes(city)) {
+        if (city.toLowerCase() && !element.city.includes(city).toLowerCase()) {
           return false;
         }
-        if (npa && !element.npa.includes(npa)) {
+        if (npa.toLowerCase() && !element.npa.includes(npa).toLowerCase()) {
           return false;
         }
-        if (email && !element.email.includes(email)) {
+        if (
+          email.toLowerCase() &&
+          !element.email.includes(email).toLowerCase()
+        ) {
           return false;
         }
-        if (phoneNumber && !element.phone_number.includes(phoneNumber)) {
+        if (
+          phoneNumber.toLowerCase() &&
+          !element.phone_number.includes(phoneNumber).toLowerCase()
+        ) {
           return false;
         }
         return true;

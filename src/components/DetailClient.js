@@ -3,7 +3,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailClient() {
-  const { clientSelected } = useData();
+  const { clientSelected, setClientSelected, setCarSelected } = useData();
   const [visible, setVisible] = useState(true);
   return (
     <Card>
@@ -38,7 +38,18 @@ export default function DetailClient() {
               </tr>
             </tbody>
           </Table>
-          <Button className="w-100">Modifier</Button>
+          <div className="gx-1">
+            <Button className="w-100 border">Modifier ce Client</Button>
+            <Button
+              className="w-100 mt-3 border"
+              onClick={() => {
+                setClientSelected(null);
+                setCarSelected(null);
+              }}
+            >
+              Selectionner un autre Client
+            </Button>
+          </div>
         </Card.Body>
       ) : (
         ""

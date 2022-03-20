@@ -8,8 +8,11 @@ import DetailClient from "./DetailClient";
 import ServiceList from "./ServiceList";
 
 export default function Details() {
-  const { clientSelected, carSelected } = useData();
-
+  const { clientSelected, carSelected, updateClientAndCarFromLocalStorage } =
+    useData();
+  useEffect(() => {
+    updateClientAndCarFromLocalStorage();
+  }, []);
   return (
     <>
       <div className="mt-4">

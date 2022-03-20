@@ -9,18 +9,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!(await verifyStoredToken())) {
-        navigate("/login");
-      }
+      await verifyStoredToken().then((res) => {
+        if (!res.status) {
+          navigate("/login");
+        }
+      });
     };
-
     fetchData();
   }, []);
   return (
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Dashboard </h2>{" "}
+          <h2 className="text-center mb-4">Dashboard</h2>{" "}
           <h3 className="text-center ">
             Hello {currentUser && currentUser.name.split(" ")[0]}
           </h3>

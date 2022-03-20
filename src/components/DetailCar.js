@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Table, Image } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailCar() {
-  const { getAllData, id } = useData();
-  const [data, setData] = useState(getAllData()[id - 1]);
+  const { carSelected, setCarSelected } = useData();
+  const [data, setData] = useState();
   const [visible, setVisible] = useState(true);
+
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
@@ -17,30 +18,41 @@ export default function DetailCar() {
             <tbody>
               <tr>
                 <td>
-                  <h5>{data.brand + " " + data.model}</h5>
-                  <h6>{data.licensePlate}</h6>
+                  <h5>{carSelected.brand + " " + carSelected.model}</h5>
+                  <h6>{carSelected.licensePlate}</h6>
                 </td>
                 <td>
-                  <h6 className="mt-2">{data.releaseDate}</h6>
+                  <h6 className="mt-2">{carSelected.releaseDate}</h6>
                 </td>
               </tr>
               <tr>
                 <td>
                   <h6>
                     {"No Chassis:"} <br />
-                    {data.chassisNo}
+                    {carSelected.chassisNo}
                   </h6>
                 </td>
                 <td>
                   <h6>
                     {"Recéption par type:"} <br />
-                    {data.receptionType}
+                    {carSelected.receptionType}
                   </h6>
                 </td>
               </tr>
             </tbody>
           </Table>
-          <Button className="w-100">Modifier</Button>
+
+          <div className="gx-1">
+            <Button className="w-100 border">Modifier cette voiture</Button>
+            <Button
+              className="w-100 mt-3 border"
+              onClick={() => {
+                setCarSelected(null);
+              }}
+            >
+              Selectionner une autre Voiture
+            </Button>
+          </div>
         </Card.Body>
       ) : (
         ""

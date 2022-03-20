@@ -10,13 +10,17 @@ export default function DataProvider({ children }) {
   const { currentUser } = useAuth();
   const [carSelected, setCarSelected] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
-  const [data, setData] = useState(null);
-  const [id, setId] = useState(0);
   const [clientSelected, setClientSelected] = useState(null);
 
   useEffect(() => {
-    sessionStorage.setItem("client-selected", JSON.stringify(clientSelected));
-  }, [clientSelected]);
+    localStorage.setItem("client-selected", JSON.stringify(clientSelected));
+    localStorage.setItem("car-selected", JSON.stringify(carSelected));
+  }, [clientSelected, carSelected]);
+
+  function updateClientAndCarFromLocalStorage() {
+    setClientSelected(JSON.parse(localStorage.getItem("client-selected")));
+    setCarSelected(JSON.parse(localStorage.getItem("car-selected")));
+  }
   function getBearerAuthConfig() {
     return {
       headers: {
@@ -42,6 +46,7 @@ export default function DataProvider({ children }) {
     fd.append("npa", npa);
     fd.append("phone_number", phoneNumber);
     fd.append("email_address", email);
+
     const config = getBearerAuthConfig();
     const res = await api_post(
       process.env.REACT_APP_API_CLIENT_END_POINT,
@@ -67,7 +72,6 @@ export default function DataProvider({ children }) {
         return { status: false, message: "Unknown Error. Try again" };
     }
   }
-
   async function getAllClients() {
     const config = getBearerAuthConfig();
     const res = await api_get(
@@ -94,36 +98,89 @@ export default function DataProvider({ children }) {
         owner_id: owner_id,
       },
     };
-    console.log(config);
     const res = await api_get(
       process.env.REACT_APP_API_VEHICLE_END_POINT,
       config
     );
+    let message;
     switch (res.status) {
       case 200:
-        return { status: true, message: res.data };
+        message = res.data;
+        break;
       case 401:
-        return { status: false, message: "Session expired. Log in" };
+        message = "Session Expired. Log in";
+        break;
       case 500:
-        return { status: false, message: "Server Error. Try again" };
+        message = "Server Error. Try again";
+        break;
       case 404:
-        return { status: false, message: "No car found" };
+        message = "No Car Found";
+        break;
       default:
-        return { status: false, message: "Unknown Error. Try again" };
+        message = "Unknown Error. Try again";
+        break;
     }
+    return { status: res.status, message: message };
+  }
+  async function createCar(data) {
+    const auth = getBearerAuthConfig();
+    auth.headers["Content-Type"] = "multipart/form-data";
+
+    const config = {
+      headers: { "Content-Type": "multipart/form-data" },
+    };
+
+    const res = await api_post(
+      process.env.REACT_APP_API_VEHICLE_END_POINT,
+      data,
+      config
+    );
+  }
+  async function getServicesDone(car_id) {
+    const auth = getBearerAuthConfig();
+    const config = {
+      auth,
+      params: {
+        vehicle_id: car_id,
+      },
+    };
+    const res = await api_get(
+      process.env.REACT_APP_API_SERVICE_END_POINT,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session Expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      case 404:
+        message = "No Car Found";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
   }
   const value = {
-    carSelected,
     setCarSelected,
     searchResults,
     setSearchResults,
-    id,
-    setId,
     createClient,
     clientSelected,
+    carSelected,
     setClientSelected,
     getAllClients,
     getCarsFromClient,
+    getServicesDone,
+    updateClientAndCarFromLocalStorage,
+    createCar,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

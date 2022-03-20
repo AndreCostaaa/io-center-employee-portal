@@ -11,14 +11,14 @@ export default function Service({ props }) {
               <h5>{props.type}</h5>
             </td>
             <td>
-              <h5>{props.user}</h5>
+              <h5>{props.mechanic_id}</h5>
             </td>
           </tr>
           <tr>
             <td>
               <h6>
                 {"Date:"}
-                <br /> {props.date}
+                <br /> {props.date && props.date.split(" ")[0]}
               </h6>
             </td>
             <td>
@@ -32,11 +32,10 @@ export default function Service({ props }) {
       </Table>
       <h6>
         Descriptif: <br />
-        <br />
-        {props.descriptif}
+        {props.description}
       </h6>
 
-      <Button className="w-100">Modifier</Button>
+      <Button className="w-100 mt-2">Modifier</Button>
     </div>
   );
 }

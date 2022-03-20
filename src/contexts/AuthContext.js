@@ -27,6 +27,7 @@ export default function AuthProvider({ children }) {
           token: data.access_token,
         });
         localStorage.setItem("user", JSON.stringify(currentUser));
+
         return { status: true, message: "Login successful" };
       case 401:
         return { status: false, message: "Wrong username or password" };
@@ -38,13 +39,16 @@ export default function AuthProvider({ children }) {
   }
   async function verifyStoredToken() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (!storedUser || !storedUser.token) {
+    if (!storedUser && !currentUser) {
       //no user stored
-      return false;
+      return { status: false, message: "No user" };
     }
+
     const config = {
       headers: {
-        Authorization: `Bearer ${storedUser.token}`,
+        Authorization: `Bearer ${
+          storedUser ? storedUser.token : currentUser.token
+        }`,
       },
     };
     const res = await api_post(
@@ -52,10 +56,12 @@ export default function AuthProvider({ children }) {
       config,
       {}
     );
-
     switch (res.status) {
       case 200:
-        setCurrentUser(storedUser);
+        if (storedUser && !currentUser) {
+          setCurrentUser(storedUser);
+        }
+
         return { status: true, message: "Token is valid" };
       case 401:
         logout();

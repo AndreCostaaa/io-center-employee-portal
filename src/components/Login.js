@@ -13,13 +13,16 @@ export default function Login() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (await verifyStoredToken()) {
-        navigate("/dashboard");
-      }
+      await verifyStoredToken().then((res) => {
+        if (res.status) {
+          navigate("/dashboard");
+        }
+      });
     };
 
     fetchData();
   }, []);
+
   async function onClick(e) {
     e.preventDefault();
     if (!username) {
