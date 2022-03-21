@@ -14,12 +14,13 @@ export async function api_get(url, config) {
 export async function api_post(url, data, config) {
   const result = await axios
     .post(url, data, config)
-    .then(function (res) {
-      console.log(res);
-      //console.log(res.data);
+    .then((response) => {
+      console.log(response);
+      return { status: response.status, data: response.data };
     })
     .catch(function (error) {
       console.log(error.toJSON());
+      return { status: error.response.status };
     });
   return result;
 }

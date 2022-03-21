@@ -27,41 +27,6 @@ export default function SelectCar() {
 
     fetchData();
   }, []);
-  async function handleSubmit(e) {
-    var fd = new FormData();
-    fd.append("id", 2);
-    fd.append("brand", "bmw");
-    fd.append("chassis_no", "12");
-    fd.append("license_plate", "fr123456");
-    const config = {
-      headers: { "Content-Type": "multipart/form-data" },
-    };
-    console.log(config);
-    axios
-      .post(process.env.REACT_APP_API_VEHICLE_END_POINT, fd, config)
-      .then(function (response) {
-        //handle success
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-    /*axios({
-      method: "post",
-      url: process.env.REACT_APP_API_VEHICLE_END_POINT,
-      data: fd,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then(function (response) {
-        //handle success
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });*/
-  }
   return (
     <>
       <Card>
@@ -101,10 +66,7 @@ export default function SelectCar() {
           {carHovered && carHovered.id > 0 ? (
             <Button
               className="w-100"
-              onClick={() => {
-                setCarSelected(carHovered);
-                handleSubmit();
-              }}
+              onClick={() => setCarSelected(carHovered)}
             >
               Selectionner
             </Button>

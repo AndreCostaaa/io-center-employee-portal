@@ -11,8 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function CreateClient() {
-  const prenomRef = useRef();
-  const nomRef = useRef();
   const navigate = useNavigate();
   const [service, setService] = useState("");
   const [machine, setMachine] = useState("");
@@ -30,8 +28,10 @@ export default function CreateClient() {
   ) : (
     <>
       <Card>
+        <Card.Header>
+          <h2 className="text-center">Nouveau Service</h2>
+        </Card.Header>
         <Card.Body>
-          <h2 className="text-center mb-4">Service</h2>
           <DropdownButton
             drop="end"
             className="text-center"
@@ -43,19 +43,24 @@ export default function CreateClient() {
               </Dropdown.Item>
             ))}
           </DropdownButton>
-          <h2 className="text-center mt-5">{service}</h2>
+          <h4 className="text-center mt-2">{"Type de Service: " + service}</h4>
           {service === "Optimisation" ? (
-            <DropdownButton
-              drop="end"
-              className="text-center mt-5 mb-5"
-              title="Machine utilisé"
-            >
-              {machineList.map((machine) => (
-                <Dropdown.Item onClick={() => setMachine(machine)}>
-                  {machine}
-                </Dropdown.Item>
-              ))}
-            </DropdownButton>
+            <>
+              <DropdownButton
+                drop="end"
+                className="text-center mt-1 mb-1"
+                title="Machine utilisée"
+              >
+                {machineList.map((machine) => (
+                  <Dropdown.Item onClick={() => setMachine(machine)}>
+                    {machine}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
+              <h4 className="text-center mt-2">
+                {"Machine utilisée: " + machine}
+              </h4>
+            </>
           ) : (
             ""
           )}

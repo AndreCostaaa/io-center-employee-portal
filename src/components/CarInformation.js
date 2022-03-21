@@ -3,6 +3,7 @@ import { Card } from "react-bootstrap";
 
 export default function CarInformation(props) {
   let car = props.car;
+
   return (
     <tr
       className={
@@ -12,14 +13,15 @@ export default function CarInformation(props) {
       onClick={(e) => (props.hovered ? props.callback(0) : props.callback(car))}
     >
       <td>
-        {car.brand} <br />
-        {car.model}
+        {car.brand.toUpperCase()} <br />
+        {car.model.toUpperCase()}
       </td>
       <td>
-        {car.license_plate} <br /> {car.release_date}
+        {car.license_plate.toUpperCase()} <br />{" "}
+        {car.release_date && car.release_date.split(" ")[0].split("-")[0]}
       </td>
-      <td>{car.chassis_no}</td>
-      <td>{car.reception_type}</td>
+      <td>{car.chassis_no.toUpperCase()}</td>
+      <td>{car.reception_type.toUpperCase()}</td>
     </tr>
   );
 }

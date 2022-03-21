@@ -51,36 +51,39 @@ export default function SelectClient() {
         ) {
           return false;
         }
-        if (name.toLowerCase() && !element.name.includes(name).toLowerCase()) {
+        if (name && !element.name.toLowerCase().includes(name.toLowerCase())) {
           return false;
         }
         if (
-          lastName.toLowerCase() &&
-          !element.last_name.includes(lastName).toLowerCase()
+          lastName &&
+          !element.last_name.toLowerCase().includes(lastName.toLowerCase())
         ) {
           return false;
         }
         if (
-          address.toLowerCase() &&
-          !element.address.includes(address).toLowerCase()
+          address &&
+          !element.address.toLowerCase().includes(address.toLowerCase())
         ) {
           return false;
         }
-        if (city.toLowerCase() && !element.city.includes(city).toLowerCase()) {
+        if (city && !element.city.toLowerCase().includes(city.toLowerCase())) {
           return false;
         }
-        if (npa.toLowerCase() && !element.npa.includes(npa).toLowerCase()) {
+        if (npa && !element.npa.toLowerCase().includes(npa.toLowerCase())) {
           return false;
         }
         if (
-          email.toLowerCase() &&
-          !element.email.includes(email).toLowerCase()
+          email &&
+          !element.email.toLowerCase().includes(email.toLowerCase())
         ) {
           return false;
         }
         if (
-          phoneNumber.toLowerCase() &&
-          !element.phone_number.includes(phoneNumber).toLowerCase()
+          phoneNumber &&
+          !element.phone_number
+            .toLowerCase()
+            .includes(phoneNumber)
+            .toLowerCase()
         ) {
           return false;
         }
@@ -109,9 +112,16 @@ export default function SelectClient() {
     if (!handleRequiredValues()) {
       return;
     }
-    if (
-      await createClient(name, lastName, address, city, npa, email, phoneNumber)
-    ) {
+    let fd = new FormData();
+
+    fd.append("name", name);
+    fd.append("last_name", lastName);
+    fd.append("address", address);
+    fd.append("city", city);
+    fd.append("npa", npa);
+    fd.append("phone_number", phoneNumber);
+    fd.append("email_address", email);
+    if (await createClient(fd)) {
     }
   }
   function handleSelected(e) {

@@ -14,8 +14,8 @@ export default function AuthProvider({ children }) {
     };
     const res = await api_post(
       process.env.REACT_APP_API_LOGIN_END_POINT,
-      config,
-      {}
+      {},
+      config
     );
     switch (res.status) {
       case 200:
@@ -53,8 +53,8 @@ export default function AuthProvider({ children }) {
     };
     const res = await api_post(
       process.env.REACT_APP_API_TOKEN_VERIFICATION_END_POINT,
-      config,
-      {}
+      ~{},
+      config
     );
     switch (res.status) {
       case 200:

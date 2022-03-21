@@ -13,7 +13,8 @@ export default function CreateCar() {
   const [licensePlate, setLicensePlate] = useState();
   const [receptionType, setReceptionType] = useState();
   const navigate = useNavigate();
-  const { clientSelected, getCarsFromClient, createCar } = useData();
+  const { clientSelected, getCarsFromClient, createCar, setCurrentCar } =
+    useData();
   useEffect(() => {
     const fetchData = async () => {
       const response = await getCarsFromClient(clientSelected.id);
@@ -25,17 +26,24 @@ export default function CreateCar() {
     e.preventDefault();
 
     let carte_grise = registrationPictureRef.current.files[0];
+    if (!carte_grise) {
+      registrationPictureRef.current.focus();
+      return;
+    }
     let pictures = picturesRef.current.files;
-    console.log(pictures);
+
     var fd = new FormData();
+    fd.append("car_registration_photo", carte_grise);
+    for (let i in pictures) {
+      fd.append("picture_" + i.toString(), pictures[i]);
+    }
     fd.append("brand", brand);
     fd.append("model", model);
     fd.append("date", date);
     fd.append("license_plate", licensePlate);
     fd.append("chassis_no", chassisNo);
     fd.append("reception_type", receptionType);
-    fd.append("car_registration_photo", carte_grise);
-    fd.append("pictures", pictures);
+
     fd.append("owner_id", clientSelected.id);
     await createCar(fd);
   }

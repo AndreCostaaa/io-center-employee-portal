@@ -6,7 +6,7 @@ export default function DetailCar() {
   const { carSelected, setCarSelected } = useData();
   const [data, setData] = useState();
   const [visible, setVisible] = useState(true);
-
+  console.log(carSelected);
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
@@ -18,24 +18,31 @@ export default function DetailCar() {
             <tbody>
               <tr>
                 <td>
-                  <h5>{carSelected.brand + " " + carSelected.model}</h5>
-                  <h6>{carSelected.licensePlate}</h6>
+                  <h5>
+                    {carSelected.brand.toUpperCase() +
+                      " " +
+                      carSelected.model.toUpperCase()}
+                  </h5>
+                  <h6>{carSelected.license_plate.toUpperCase()}</h6>
                 </td>
                 <td>
-                  <h6 className="mt-2">{carSelected.releaseDate}</h6>
+                  <h6 className="mt-2">
+                    {carSelected.release_date &&
+                      carSelected.release_date.split(" ")[0]}
+                  </h6>
                 </td>
               </tr>
               <tr>
                 <td>
                   <h6>
                     {"No Chassis:"} <br />
-                    {carSelected.chassisNo}
+                    {carSelected.chassis_no.toUpperCase()}
                   </h6>
                 </td>
                 <td>
                   <h6>
                     {"Recéption par type:"} <br />
-                    {carSelected.receptionType}
+                    {carSelected.reception_type.toUpperCase()}
                   </h6>
                 </td>
               </tr>

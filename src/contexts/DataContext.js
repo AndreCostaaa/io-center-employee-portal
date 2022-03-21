@@ -28,30 +28,12 @@ export default function DataProvider({ children }) {
       },
     };
   }
-  async function createClient(
-    name,
-    lastName,
-    address,
-    city,
-    npa,
-    phoneNumber,
-    email
-  ) {
-    let fd = new FormData();
-
-    fd.append("name", name);
-    fd.append("last_name", lastName);
-    fd.append("address", address);
-    fd.append("city", city);
-    fd.append("npa", npa);
-    fd.append("phone_number", phoneNumber);
-    fd.append("email_address", email);
-
+  async function createClient(data) {
     const config = getBearerAuthConfig();
     const res = await api_post(
       process.env.REACT_APP_API_CLIENT_END_POINT,
-      config,
-      fd
+      data,
+      config
     );
 
     switch (res.status) {
@@ -135,6 +117,17 @@ export default function DataProvider({ children }) {
       data,
       config
     );
+    let message;
+    switch (res.status) {
+      case 201:
+        message = res.data;
+        setCarSelected(res.data);
+        break;
+      default:
+        message = "Error occured. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
   }
   async function getServicesDone(car_id) {
     const auth = getBearerAuthConfig();
