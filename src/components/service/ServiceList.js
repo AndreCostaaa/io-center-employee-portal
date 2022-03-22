@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Table } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 import Service from "./Service";
 import CreateService from "./CreateService";
@@ -8,6 +8,7 @@ export default function DetailClient() {
   const [servicesArr, setServicesArr] = useState([]);
   const [visible, setVisible] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [showingHistory, setShowingHistory] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       await getServicesDone(carSelected.id).then((res) => {
@@ -27,26 +28,32 @@ export default function DetailClient() {
       </Card.Header>
       {visible ? (
         <Card.Body>
-          {!creating && (
-            <Button className="w-100 mb-2" onClick={() => setCreating(true)}>
-              Créer Nouveau Service
-            </Button>
-          )}
+          <Button className="w-100 mb-2" onClick={() => setCreating(!creating)}>
+            {creating ? "Annuler" : "Créer Nouveau Service"}
+          </Button>
           {creating && <CreateService />}
-          {creating ? (
-            <Button className="w-100 mt-2">Regarder Historique</Button>
-          ) : servicesArr.length > 0 ? (
-            servicesArr.map((element, idx, length) => {
-              return (
-                <div key={idx} className="mt-2">
-                  <hr />
-                  <hr />
-                  <Service props={element} />
-                </div>
-              );
-            })
+          <Button
+            className="w-100 mt-2"
+            onClick={() => setShowingHistory(!showingHistory)}
+          >
+            {showingHistory ? "Cacher Historique" : "Regarder Historique"}
+          </Button>
+          {showingHistory ? (
+            servicesArr.length > 0 ? (
+              servicesArr.map((element, idx) => {
+                return (
+                  <div key={idx} className="mt-2">
+                    <hr />
+                    <hr />
+                    <Service props={element} />
+                  </div>
+                );
+              })
+            ) : (
+              <h3 className="text-center">Aucun Service</h3>
+            )
           ) : (
-            <h3 className="text-center">Historique vide</h3>
+            ""
           )}
         </Card.Body>
       ) : (

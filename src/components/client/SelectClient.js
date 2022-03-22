@@ -4,6 +4,8 @@ import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import ClientInformation from "./ClientInformation";
+import CarInformation from "components/car/CarInformation";
+import ClientSearchResults from "./ClientSearchResult";
 
 export default function SelectClient() {
   const [name, setName] = useState("");
@@ -16,14 +18,12 @@ export default function SelectClient() {
   const inputRefArr = useRef([]);
   const [clients, setClients] = useState();
   const [clientsToDisplay, setClientsToDisplay] = useState();
-  const [clientHovered, setClientHovered] = useState();
-  const navigate = useNavigate();
   const { createClient, getAllClients, clientSelected, setClientSelected } =
     useData();
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllClients()
+      await getAllClients()
         .then((data) => {
           if (data.status) {
             return data.message;
@@ -97,6 +97,7 @@ export default function SelectClient() {
       inputRefArr.current.push(element);
     }
   }
+
   function handleRequiredValues() {
     for (let i in inputRefArr.current) {
       if (!inputRefArr.current[i].value) {
@@ -118,15 +119,11 @@ export default function SelectClient() {
     fd.append("last_name", lastName);
     fd.append("address", address);
     fd.append("city", city);
-    fd.append("npa", npa);
-    fd.append("phone_number", phoneNumber);
+    fd.append("npa", npa.toString());
+    fd.append("phone_number", phoneNumber.toString());
     fd.append("email_address", email);
-    if (await createClient(fd)) {
+    await createClient(fd)) {
     }
-  }
-  function handleSelected(e) {
-    e.preventDefault();
-    setClientSelected(clientHovered);
   }
   return (
     <>
@@ -214,39 +211,7 @@ export default function SelectClient() {
         </Card.Body>
       </Card>
       {!clientSelected && (
-        <Card className="mt-2">
-          <Card.Header>
-            <h2 className="text-center">Clients Existants</h2>
-          </Card.Header>
-          <Card.Body>
-            <Table className="text-center">
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Adresse</th>
-                  <th>E-mail</th>
-                  <th>Mobile</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clientsToDisplay &&
-                  clientsToDisplay.map((client, idx) => (
-                    <ClientInformation
-                      key={idx}
-                      client={client}
-                      callback={setClientHovered}
-                      hovered={clientHovered && clientHovered.id === client.id}
-                    />
-                  ))}
-              </tbody>
-            </Table>
-            {clientHovered && (
-              <Button className="w-100 mt-3" onClick={handleSelected}>
-                Selectionner
-              </Button>
-            )}
-          </Card.Body>
-        </Card>
+        <ClientSearchResults clientsToDisplay={clientsToDisplay} />
       )}
     </>
   );

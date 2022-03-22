@@ -36,6 +36,7 @@ export default function DataProvider({ children }) {
       config
     );
 
+    let message;
     switch (res.status) {
       case 201:
         if (!res.data.id) {
@@ -45,14 +46,19 @@ export default function DataProvider({ children }) {
           };
         }
         setClientSelected(res.data);
-        return { status: true, message: "Created!" };
+
+        message = res.data;
       case 401:
-        return { status: false, message: "Session expired. Log in" };
+        message = "Session expired. Log in";
+        break;
       case 500:
-        return { status: false, message: "Server Error. Try again" };
+        message = "Server Error. Try again";
+        break;
       default:
-        return { status: false, message: "Unknown Error. Try again" };
+        message = "Unknown Error. Try again";
+        break;
     }
+    return { status: res.status, message: message };
   }
   async function getAllClients() {
     const config = getBearerAuthConfig();
@@ -60,17 +66,22 @@ export default function DataProvider({ children }) {
       process.env.REACT_APP_API_CLIENT_END_POINT,
       config
     );
-
+    let message = "";
     switch (res.status) {
       case 200:
-        return { status: true, message: res.data };
+        message = res.data;
+        break;
       case 401:
-        return { status: false, message: "Session expired. Log in" };
+        message = "Session expired. Log in";
+        break;
       case 500:
-        return { status: false, message: "Server Error. Try again" };
+        message = "Server Error. Try again";
+        break;
       default:
-        return { status: false, message: "Unknown Error. Try again" };
+        message = "Unknown Error. Try again";
+        break;
     }
+    return { status: res.status, message: message };
   }
   async function getCarsFromClient(owner_id) {
     const auth = getBearerAuthConfig();

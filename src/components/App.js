@@ -12,10 +12,10 @@ import {
 import SelectCar from "./SelectCar.js";
 import SelectClient from "./SelectClient.js";
 import CreateService from "./CreateService.js";
-import Dashboard from "./Dashboard.js";
-import Details from "./Details.js";
-import Login from "./Login.js";
-import Search from "./Search.js";
+import Dashboard from "./main-pages/Dashboard.js";
+import MainPage from "./main-pages/MainPage.js";
+import Login from "./main-pages/Login.js";
+import Search from "./search/Search.js";
 import SearchResults from "./SearchResults.js";
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
                 <Route path="/create-service" element={<CreateService />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/search-results" element={<SearchResults />} />
-                <Route path="/new" element={<Details />} />{" "}
+                <Route path="/new" element={<MainPage />} />{" "}
               </Routes>
             </DataProvider>
           </AuthProvider>

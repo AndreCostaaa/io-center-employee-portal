@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Card } from "react-bootstrap";
+import React from "react";
 
 export default function CarInformation(props) {
   let car = props.car;

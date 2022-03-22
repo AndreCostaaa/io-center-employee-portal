@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Button, Card, Table, Image } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailCar() {
   const { carSelected, setCarSelected } = useData();
-  const [data, setData] = useState();
   const [visible, setVisible] = useState(true);
-  console.log(carSelected);
+
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>

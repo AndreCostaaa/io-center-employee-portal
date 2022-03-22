@@ -53,7 +53,7 @@ export default function AuthProvider({ children }) {
     };
     const res = await api_post(
       process.env.REACT_APP_API_TOKEN_VERIFICATION_END_POINT,
-      ~{},
+      {},
       config
     );
     switch (res.status) {
@@ -61,7 +61,6 @@ export default function AuthProvider({ children }) {
         if (storedUser && !currentUser) {
           setCurrentUser(storedUser);
         }
-
         return { status: true, message: "Token is valid" };
       case 401:
         logout();

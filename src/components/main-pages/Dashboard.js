@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
   const { currentUser, logout, verifyStoredToken } = useContext(AuthContext);

@@ -1,13 +1,12 @@
 import { useData } from "contexts/DataContext";
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
-import SelectCar from "./SelectCar";
-import SelectClient from "./SelectClient";
-import DetailCar from "./DetailCar";
-import DetailClient from "./DetailClient";
-import ServiceList from "./ServiceList";
+import React, { useEffect } from "react";
+import SelectCar from "../car/SelectCar";
+import SelectClient from "../client/SelectClient";
+import DetailCar from "../car/DetailCar";
+import DetailClient from "../client/DetailClient";
+import ServiceList from "../service/ServiceList";
 
-export default function Details() {
+export default function MainPage() {
   const { clientSelected, carSelected, updateClientAndCarFromLocalStorage } =
     useData();
   useEffect(() => {
