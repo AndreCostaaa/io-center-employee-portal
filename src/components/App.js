@@ -9,14 +9,14 @@ import {
   useNavigate,
   Link,
 } from "react-router-dom";
-import SelectCar from "./SelectCar.js";
-import SelectClient from "./SelectClient.js";
-import CreateService from "./CreateService.js";
+import SelectCar from "./car/SelectCar.js";
+import SelectClient from "./client/SelectClient.js";
+import CreateService from "./service/CreateService.js";
 import Dashboard from "./main-pages/Dashboard.js";
 import MainPage from "./main-pages/MainPage.js";
 import Login from "./main-pages/Login.js";
 import Search from "./search/Search.js";
-import SearchResults from "./SearchResults.js";
+import SearchResults from "./search/SearchResults.js";
 
 function App() {
   return (

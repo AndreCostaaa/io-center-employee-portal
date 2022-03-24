@@ -10,7 +10,7 @@ export default function ClientInformation(props) {
       }
       style={{ wordWrap: "break-word" }}
       onClick={(e) =>
-        props.hovered ? props.callback(0) : props.callback(client)
+        props.hovered ? props.callback(null) : props.callback(client)
       }
     >
       <td>
@@ -20,7 +20,7 @@ export default function ClientInformation(props) {
       <td>
         {client.address} <br /> {client.city} {" " + client.npa}
       </td>
-      <td>{client.email}</td>
+      <td>{client.email_address}</td>
       <td>{client.phone_number}</td>
     </tr>
   );

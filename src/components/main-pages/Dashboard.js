@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -10,7 +10,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       await verifyStoredToken().then((res) => {
-        if (!res.status) {
+        if (res.status != 200) {
           navigate("/login");
         }
       });

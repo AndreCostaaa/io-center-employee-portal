@@ -10,26 +10,26 @@ export default function DisplayCars({ cars }) {
 
   return (
     <>
-      <Table className="text-center">
-        <thead>
-          <tr>
-            <th>
-              Marque
-              <br /> Modèle
-            </th>
-            <th>Plaque</th>
-            <th>
-              No de <br /> chassis
-            </th>
-            <th>
-              Reception par <br />
-              type
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {cars.length > 0 &&
-            cars.map((car, idx) => (
+      {cars.length > 0 ? (
+        <Table className="text-center">
+          <thead>
+            <tr>
+              <th>
+                Marque
+                <br /> Modèle
+              </th>
+              <th>Plaque</th>
+              <th>
+                No de <br /> chassis
+              </th>
+              <th>
+                Reception par <br />
+                type
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {cars.map((car, idx) => (
               <CarInformation
                 key={idx}
                 car={car}
@@ -37,8 +37,11 @@ export default function DisplayCars({ cars }) {
                 hovered={carHovered && carHovered.id === car.id}
               />
             ))}
-        </tbody>
-      </Table>
+          </tbody>
+        </Table>
+      ) : (
+        <h4 className="text-center">Aucune voiture trouvée</h4>
+      )}
       {carHovered && carHovered.id > 0 ? (
         <Button className="w-100" onClick={() => setCarSelected(carHovered)}>
           Selectionner

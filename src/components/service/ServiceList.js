@@ -12,13 +12,12 @@ export default function DetailClient() {
   useEffect(() => {
     const fetchData = async () => {
       await getServicesDone(carSelected.id).then((res) => {
-        console.log(res);
-        if (res.status == 200) {
+        if (res.status === 200) {
           setServicesArr(res.message);
         }
       });
     };
-
+    console.log("hello");
     fetchData();
   }, []);
   return (

@@ -4,7 +4,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import ClientInformation from "./ClientInformation";
 
 export default function ClientSearchResults({ clientsToDisplay }) {
-  const [clientHovered, setClientHovered] = useState(0);
+  const [clientHovered, setClientHovered] = useState();
   const { setClientSelected } = useData();
   return (
     <Card className="mt-2">

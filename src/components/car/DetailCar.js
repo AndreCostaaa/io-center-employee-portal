@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailCar() {
-  const { carSelected, setCarSelected } = useData();
+  const { carSelected, setCarSelected, getCarRegistrationImageById } =
+    useData();
   const [visible, setVisible] = useState(true);
+  const [showingRegistrationImage, setShowingRegistrationImage] =
+    useState(false);
 
+  const [carRegistrationImage, setCarRegistrationImage] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      await getCarRegistrationImageById(carSelected.id).then((res) => {
+        if (res.status) {
+          setCarRegistrationImage(res.message);
+          console.log(res.message);
+        }
+      });
+    };
+    fetchData();
+  }, [carSelected.id, getCarRegistrationImageById]);
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
@@ -48,8 +63,31 @@ export default function DetailCar() {
             </tbody>
           </Table>
 
-          <div className="gx-1">
-            <Button className="w-100 border">Modifier cette voiture</Button>
+          <div className="gx-1 text-center">
+            {showingRegistrationImage ? (
+              <img
+                src={carRegistrationImage}
+                max-width="700"
+                height="200"
+                alt="Carte grise non trouvée"
+                className="align-center"
+              ></img>
+            ) : (
+              ""
+            )}
+            <Button
+              className="w-100 border"
+              onClick={() =>
+                setShowingRegistrationImage(!showingRegistrationImage)
+              }
+            >
+              {showingRegistrationImage
+                ? "Cacher Carte Grise"
+                : "Afficher Carte Grise"}
+            </Button>
+            <Button className="w-100 mt-3 border">
+              Modifier cette voiture
+            </Button>
             <Button
               className="w-100 mt-3 border"
               onClick={() => {

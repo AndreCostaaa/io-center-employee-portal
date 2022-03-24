@@ -7,24 +7,38 @@ export function useData() {
   return useContext(DataContext);
 }
 export default function DataProvider({ children }) {
-  const { currentUser } = useAuth();
+  const { getToken, setCurrentUser } = useAuth();
   const [carSelected, setCarSelected] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [clientSelected, setClientSelected] = useState(null);
-
   useEffect(() => {
     localStorage.setItem("client-selected", JSON.stringify(clientSelected));
     localStorage.setItem("car-selected", JSON.stringify(carSelected));
   }, [clientSelected, carSelected]);
 
   function updateClientAndCarFromLocalStorage() {
-    setClientSelected(JSON.parse(localStorage.getItem("client-selected")));
-    setCarSelected(JSON.parse(localStorage.getItem("car-selected")));
+    if (localStorage.getItem("user")) {
+      debugger;
+
+      setCurrentUser(JSON.parse(localStorage.getItem("user")));
+    }
+
+    if (localStorage.getItem("client-selected")) {
+      setClientSelected(JSON.parse(localStorage.getItem("client-selected")));
+    }
+
+    if (localStorage.getItem("car-selected")) {
+      setCarSelected(JSON.parse(localStorage.getItem("car-selected")));
+    }
   }
   function getBearerAuthConfig() {
+    return { headers: { Authorization: getToken() } };
+  }
+  function getPostHeaders() {
     return {
       headers: {
-        Authorization: `Bearer ${currentUser ? currentUser.token : ""}`,
+        "Content-Type": "multipart/form-data",
+        Authorization: getToken(),
       },
     };
   }
@@ -46,8 +60,8 @@ export default function DataProvider({ children }) {
           };
         }
         setClientSelected(res.data);
-
         message = res.data;
+        break;
       case 401:
         message = "Session expired. Log in";
         break;
@@ -116,13 +130,7 @@ export default function DataProvider({ children }) {
     return { status: res.status, message: message };
   }
   async function createCar(data) {
-    const auth = getBearerAuthConfig();
-    auth.headers["Content-Type"] = "multipart/form-data";
-
-    const config = {
-      headers: { "Content-Type": "multipart/form-data" },
-    };
-
+    const config = getPostHeaders();
     const res = await api_post(
       process.env.REACT_APP_API_VEHICLE_END_POINT,
       data,
@@ -140,10 +148,29 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
+
+  async function createService(data) {
+    const config = getPostHeaders();
+    const res = await api_post(
+      process.env.REACT_APP_API_SERVICE_END_POINT,
+      data,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 201:
+        message = res.data;
+        break;
+      default:
+        message = "Error occurred. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
   async function getServicesDone(car_id) {
-    const auth = getBearerAuthConfig();
+    const headers = getBearerAuthConfig();
     const config = {
-      auth,
+      headers,
       params: {
         vehicle_id: car_id,
       },
@@ -172,6 +199,40 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
+  async function getCarRegistrationImageById(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: {
+        id: id,
+        media: "registration",
+      },
+      responseType: "blob",
+    };
+
+    const res = await api_get(
+      process.env.REACT_APP_API_VEHICLE_MEDIA_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = URL.createObjectURL(res.data);
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
   const value = {
     setCarSelected,
     searchResults,
@@ -185,6 +246,8 @@ export default function DataProvider({ children }) {
     getServicesDone,
     updateClientAndCarFromLocalStorage,
     createCar,
+    getCarRegistrationImageById,
+    createService,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

@@ -11,6 +11,17 @@ export async function api_get(url, config) {
     });
   return result;
 }
+export async function api_getFiles(url, config) {
+  const result = await axios
+    .get(url, config)
+    .then((response) => {
+      return { status: response.status, data: response.data };
+    })
+    .catch((error) => {
+      return { status: error.response.status };
+    });
+  return result;
+}
 export async function api_post(url, data, config) {
   const result = await axios
     .post(url, data, config)

@@ -1,28 +1,54 @@
+import { useData } from "contexts/DataContext";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Dropdown,
-  DropdownButton,
-  Form,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Dropdown, DropdownButton, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateClient() {
-  const navigate = useNavigate();
   const [service, setService] = useState("");
   const [machine, setMachine] = useState("");
   const [loading, setLoading] = useState(true);
+  const kmRef = useRef();
+  const picturesRef = useRef();
+  const filesRef = useRef();
+  const [gestanId, setGestanId] = useState();
+  const [date, setDate] = useState();
+  const [description, setDescription] = useState("");
   const [servicesList, setServicesList] = useState([]);
   const [machineList, setMachineList] = useState([]);
-
+  const { createService, currentUser } = useData();
   useEffect(() => {
     setServicesList(["Service", "Installation", "Réparation", "Optimisation"]);
-    setMachineList(["v2", "v3"]);
+    setMachineList([
+      { id: 1, name: "v2" },
+      { id: 2, name: "v3" },
+    ]);
     setLoading(false);
   }, []);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!kmRef.current.value) {
+      kmRef.current.focus();
+    }
+
+    let fd = new FormData();
+
+    for (let i in picturesRef.current.files) {
+      fd.append("picture_" + i.toString(), picturesRef.current.files);
+    }
+    for (let i in filesRef.current.files) {
+      fd.append("picture_" + i.toString(), filesRef.current.files);
+    }
+    fd.append("type", service);
+    fd.append("date", date);
+    fd.append("km", kmRef.current.value);
+    fd.append("description", description);
+    fd.append("machine_id", machine.id);
+    fd.append("gestan_id", gestanId);
+    debugger;
+    fd.append("mechanic_id", currentUser.id);
+    await createService(fd);
+  }
   return loading ? (
     <h1> Loading </h1>
   ) : (
@@ -66,31 +92,51 @@ export default function CreateClient() {
           )}
           {service ? (
             <Form>
+              <Form.Group className="mt-2">
+                <Form.Label>Descriptif</Form.Label>
+                <Form.Control
+                  className="w-100"
+                  as="textarea"
+                  rows={3}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
               <Form.Group>
-                <Form.Group className="mt-2">
-                  <Form.Label>Descriptif</Form.Label>
-                  <Form.Control
-                    className="w-100"
-                    as="textarea"
-                    rows={3}
-                  ></Form.Control>
-                </Form.Group>
-
                 <Form.Label>Km</Form.Label>
                 <Form.Control
                   className="w-100"
                   type="number"
                   min="0"
+                  ref={kmRef}
                 ></Form.Control>
               </Form.Group>
               <Form.Group>
+                <Form.Label>ID Gestan</Form.Label>
+                <Form.Control
+                  className="w-100"
+                  type="number"
+                  min="0"
+                  onChange={(e) => setGestanId(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) => setDate(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+
+              <Form.Group>
                 <Form.Label>Photos</Form.Label>
-                <Form.Control type="file" multiple />
+                <Form.Control ref={picturesRef} type="file" multiple />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Files</Form.Label>
+                <Form.Control ref={filesRef} type="file" multiple />
               </Form.Group>
               <Button
-                onClick={() => {
-                  navigate("/dashboard");
-                }}
+                onClick={handleSubmit}
                 className="w-100 mt-3"
                 type="submit"
               >

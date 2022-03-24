@@ -23,13 +23,12 @@ export default function SelectClient() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAllClients()
-        .then((data) => {
-          if (data.status) {
-            return data.message;
-          }
-        })
-        .then((data) => setClients(data));
+      await getAllClients().then((data) => {
+        if (data.status) {
+          console.log(data.message);
+          setClients(data.message);
+        }
+      });
     };
     fetchData();
   }, []);
@@ -74,7 +73,7 @@ export default function SelectClient() {
         }
         if (
           email &&
-          !element.email.toLowerCase().includes(email.toLowerCase())
+          !element.email_address.toLowerCase().includes(email.toLowerCase())
         ) {
           return false;
         }
@@ -82,8 +81,7 @@ export default function SelectClient() {
           phoneNumber &&
           !element.phone_number
             .toLowerCase()
-            .includes(phoneNumber)
-            .toLowerCase()
+            .includes(phoneNumber.toLowerCase())
         ) {
           return false;
         }
@@ -122,8 +120,7 @@ export default function SelectClient() {
     fd.append("npa", npa.toString());
     fd.append("phone_number", phoneNumber.toString());
     fd.append("email_address", email);
-    await createClient(fd)) {
-    }
+    await createClient(fd);
   }
   return (
     <>

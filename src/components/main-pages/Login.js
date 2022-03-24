@@ -14,7 +14,7 @@ export default function Login() {
   useEffect(() => {
     const fetchData = async () => {
       await verifyStoredToken().then((res) => {
-        if (res.status) {
+        if (res.status === 200) {
           navigate("/dashboard");
         }
       });
@@ -38,7 +38,7 @@ export default function Login() {
     setInfo("Logging in...");
     setInfoType("info");
     let response = await login(username, password);
-    if (response.status) {
+    if (response.status === 200) {
       setInfo("Login successful. Redirecting...");
       setInfoType("info");
       navigate("/dashboard");
