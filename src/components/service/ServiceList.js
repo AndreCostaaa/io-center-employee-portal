@@ -9,15 +9,16 @@ export default function DetailClient() {
   const [visible, setVisible] = useState(true);
   const [creating, setCreating] = useState(false);
   const [showingHistory, setShowingHistory] = useState(false);
+
+  const fetchServicesData = async () => {
+    await getServicesDone(carSelected.id).then((response) => {
+      if (response.status === 200) {
+        setServicesArr(response.message);
+      }
+    });
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      await getServicesDone(carSelected.id).then((res) => {
-        if (res.status === 200) {
-          setServicesArr(res.message);
-        }
-      });
-    };
-    fetchData();
+    fetchServicesData();
   }, []);
   return (
     <Card>
@@ -26,27 +27,44 @@ export default function DetailClient() {
       </Card.Header>
       {visible ? (
         <Card.Body>
-          <Button className="w-100 mb-2" onClick={() => setCreating(!creating)}>
+          <Button
+            className="w-100 mb-2"
+            onClick={() => {
+              setCreating(!creating);
+            }}
+          >
             {creating ? "Annuler" : "Créer Nouveau Service"}
           </Button>
-          {creating && <CreateService />}
+          {creating && <CreateService setCreating={setCreating} />}
           <Button
             className="w-100 mt-2"
             onClick={() => setShowingHistory(!showingHistory)}
           >
             {showingHistory ? "Cacher Historique" : "Regarder Historique"}
           </Button>
+          {showingHistory && (
+            <Button
+              className="mt-2 w-100 text-center"
+              onClick={fetchServicesData}
+            >
+              Refresh
+            </Button>
+          )}
           {showingHistory ? (
             servicesArr.length > 0 ? (
-              servicesArr.map((element, idx) => {
-                return (
-                  <div key={idx} className="mt-2">
-                    <hr />
-                    <hr />
-                    <Service props={element} />
-                  </div>
-                );
-              })
+              servicesArr
+                .slice(0)
+                .reverse()
+                .map((element, idx) => {
+                  return (
+                    <div key={idx} className="mt-2">
+                      <hr />
+                      <hr />
+                      <h5 className="text-center">{idx + 1}</h5>
+                      <Service props={element} />
+                    </div>
+                  );
+                })
             ) : (
               <h3 className="text-center">Aucun Service</h3>
             )

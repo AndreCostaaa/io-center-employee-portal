@@ -6,11 +6,6 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 export default function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
   async function login(username, password) {
     const config = {
       auth: { username: username, password: password },
@@ -24,7 +19,7 @@ export default function AuthProvider({ children }) {
 
     switch (res.status) {
       case 200:
-        setCurrentUser(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
 
         message = "Login successful";
         break;
@@ -41,21 +36,8 @@ export default function AuthProvider({ children }) {
     return { status: res.status, message: message };
   }
   function getToken() {
-    let storedUser = localStorage.getItem("user");
-    if (storedUser !== "") {
-      storedUser = JSON.parse(storedUser);
-    } else {
-      return null;
-    }
-    if (!storedUser && !currentUser) {
-      return null;
-    }
-    if (!currentUser) {
-      setCurrentUser(storedUser);
-    }
-    return `Bearer ${
-      currentUser ? currentUser.access_token : storedUser.access_token
-    }`;
+    const user = getCurrentUser();
+    return `Bearer ${user.access_token}`;
   }
 
   async function verifyStoredToken() {
@@ -93,15 +75,20 @@ export default function AuthProvider({ children }) {
   }
   function logout() {
     localStorage.clear();
-    setCurrentUser(null);
+  }
+  function getCurrentUser() {
+    let storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      return null;
+    }
+    return JSON.parse(storedUser);
   }
   const value = {
-    currentUser,
     login,
     logout,
     verifyStoredToken,
     getToken,
-    setCurrentUser,
+    getCurrentUser,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

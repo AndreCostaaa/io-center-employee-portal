@@ -1,4 +1,4 @@
-import { api_get, api_post } from "../api/api";
+import { api_get, api_post, api_patch } from "../api/api";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 export const DataContext = React.createContext(null);
@@ -7,7 +7,7 @@ export function useData() {
   return useContext(DataContext);
 }
 export default function DataProvider({ children }) {
-  const { getToken, setCurrentUser } = useAuth();
+  const { getToken } = useAuth();
   const [carSelected, setCarSelected] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [clientSelected, setClientSelected] = useState(null);
@@ -17,12 +17,6 @@ export default function DataProvider({ children }) {
   }, [clientSelected, carSelected]);
 
   function updateClientAndCarFromLocalStorage() {
-    if (localStorage.getItem("user")) {
-      debugger;
-
-      setCurrentUser(JSON.parse(localStorage.getItem("user")));
-    }
-
     if (localStorage.getItem("client-selected")) {
       setClientSelected(JSON.parse(localStorage.getItem("client-selected")));
     }
@@ -233,6 +227,149 @@ export default function DataProvider({ children }) {
 
     return { status: res.status, message: message };
   }
+
+  async function getMechanicNameById(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: {
+        id: id,
+      },
+    };
+    const res = await api_get(process.env.REACT_APP_API_USER_END_POINT, config);
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function getMachineList() {
+    const config = getBearerAuthConfig();
+    const res = await api_get(process.env.REACT_APP_API_TOOL_END_POINT, config);
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+
+  async function patchClient(data) {
+    const config = getPostHeaders();
+    const res = await api_patch(
+      process.env.REACT_APP_API_CLIENT_END_POINT,
+      data,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      default:
+        message = "Error occurred. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function patchCar(data) {
+    const config = getPostHeaders();
+    const res = await api_patch(
+      process.env.REACT_APP_API_VEHICLE_END_POINT,
+      data,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      default:
+        message = "Error occurred. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function getToolNameById(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: {
+        id: id,
+      },
+    };
+    const res = await api_get(process.env.REACT_APP_API_TOOL_END_POINT, config);
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+
+  async function getServicePicturesById(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: { id: id },
+      responseType: "blob",
+    };
+
+    const res = await api_get(
+      process.env.REACT_APP_API_SERVICE_MEDIA_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        new Blob([data], { type: 'application/zip' })
+        message = URL.createObjectURL(res.data);
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
   const value = {
     setCarSelected,
     searchResults,
@@ -248,6 +385,11 @@ export default function DataProvider({ children }) {
     createCar,
     getCarRegistrationImageById,
     createService,
+    getMechanicNameById,
+    getMachineList,
+    patchClient,
+    patchCar,
+    getToolNameById,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

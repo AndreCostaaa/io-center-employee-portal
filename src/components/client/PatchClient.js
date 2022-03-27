@@ -1,98 +1,17 @@
 import { useData } from "contexts/DataContext";
-import React, { useEffect, useState, useRef } from "react";
-import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { BsFillArrowLeftSquareFill } from "react-icons/bs";
-import ClientInformation from "./ClientInformation";
-import CarInformation from "components/car/CarInformation";
-import ClientSearchResults from "./ClientSearchResult";
+import React, { useState, useRef } from "react";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 
-export default function SelectClient() {
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address, setAddress] = useState("");
-  const [npa, setNpa] = useState("");
-  const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+export default function PatchClient({ setModifyingClient }) {
+  const { clientSelected, patchClient, setClientSelected } = useData();
+  const [name, setName] = useState(clientSelected.name);
+  const [lastName, setLastName] = useState(clientSelected.last_name);
+  const [address, setAddress] = useState(clientSelected.address);
+  const [npa, setNpa] = useState(clientSelected.npa);
+  const [city, setCity] = useState(clientSelected.city);
+  const [email, setEmail] = useState(clientSelected.email_address);
+  const [phoneNumber, setPhoneNumber] = useState(clientSelected.phone_number);
   const inputRefArr = useRef([]);
-  const [clients, setClients] = useState();
-  const [clientsToDisplay, setClientsToDisplay] = useState();
-  const {
-    createClient,
-    getAllClients,
-    clientSelected,
-    setClientSelected,
-    patchClient,
-  } = useData();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getAllClients().then((data) => {
-        if (data.status) {
-          setClients(data.message);
-        }
-      });
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (!clients) {
-      return;
-    }
-    setClientsToDisplay(
-      clients.filter((element) => {
-        if (
-          !name &&
-          !lastName &&
-          !address &&
-          !city &&
-          !npa &&
-          !email &&
-          !phoneNumber
-        ) {
-          return false;
-        }
-        if (name && !element.name.toLowerCase().includes(name.toLowerCase())) {
-          return false;
-        }
-        if (
-          lastName &&
-          !element.last_name.toLowerCase().includes(lastName.toLowerCase())
-        ) {
-          return false;
-        }
-        if (
-          address &&
-          !element.address.toLowerCase().includes(address.toLowerCase())
-        ) {
-          return false;
-        }
-        if (city && !element.city.toLowerCase().includes(city.toLowerCase())) {
-          return false;
-        }
-        if (npa && !element.npa.toLowerCase().includes(npa.toLowerCase())) {
-          return false;
-        }
-        if (
-          email &&
-          !element.email_address.toLowerCase().includes(email.toLowerCase())
-        ) {
-          return false;
-        }
-        if (
-          phoneNumber &&
-          !element.phone_number
-            .toLowerCase()
-            .includes(phoneNumber.toLowerCase())
-        ) {
-          return false;
-        }
-        return true;
-      })
-    );
-  }, [clients, name, lastName, address, city, npa, email, phoneNumber]);
 
   function addToRefs(element) {
     if (element && !inputRefArr.current.includes(element)) {
@@ -100,22 +19,8 @@ export default function SelectClient() {
     }
   }
 
-  function handleRequiredValues() {
-    for (let i in inputRefArr.current) {
-      if (!inputRefArr.current[i].value) {
-        inputRefArr.current[i].focus();
-        return false;
-      }
-    }
-    return true;
-  }
-  async function handleCreate(e) {
+  async function handleUpdate(e) {
     e.preventDefault();
-
-    if (!handleRequiredValues()) {
-      return;
-    }
-
     let fd = new FormData();
 
     fd.append("name", name);
@@ -125,8 +30,15 @@ export default function SelectClient() {
     fd.append("npa", npa.toString());
     fd.append("phone_number", phoneNumber.toString());
     fd.append("email_address", email);
-    await createClient(fd);
+    fd.append("id", clientSelected.id);
+    await patchClient(fd).then((res) => {
+      if (res.status === 200) {
+        setClientSelected(res.message);
+        setModifyingClient(false);
+      }
+    });
   }
+
   return (
     <>
       <Card>
@@ -141,6 +53,7 @@ export default function SelectClient() {
                 type="text"
                 onChange={(e) => setName(e.target.value)}
                 ref={addToRefs}
+                value={name}
               />
             </Form.Group>
             <Form.Group>
@@ -149,6 +62,7 @@ export default function SelectClient() {
                 type="text"
                 onChange={(e) => setLastName(e.target.value)}
                 ref={addToRefs}
+                value={lastName}
               ></Form.Control>
             </Form.Group>
             <Form.Group>
@@ -157,6 +71,7 @@ export default function SelectClient() {
                 type="text"
                 onChange={(e) => setAddress(e.target.value)}
                 ref={addToRefs}
+                value={address}
               ></Form.Control>
             </Form.Group>
             <Row>
@@ -167,6 +82,7 @@ export default function SelectClient() {
                     type="text"
                     onChange={(e) => setCity(e.target.value)}
                     ref={addToRefs}
+                    value={city}
                   ></Form.Control>
                 </Form.Group>
               </div>
@@ -190,6 +106,7 @@ export default function SelectClient() {
                 <Form.Control
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 ></Form.Control>
               </Form.Group>
               <Form.Group as={Col}>
@@ -207,14 +124,17 @@ export default function SelectClient() {
               </Form.Group>
             </Row>
           </Form>
-          <Button className="w-100 mt-3" onClick={handleCreate}>
-            Nouveau Client
+          <Button className="w-100 mt-3" onClick={handleUpdate}>
+            Modifier
+          </Button>
+          <Button
+            onClick={() => setModifyingClient(false)}
+            className="w-100 mt-1"
+          >
+            Annuler
           </Button>
         </Card.Body>
       </Card>
-      {!clientSelected && (
-        <ClientSearchResults clientsToDisplay={clientsToDisplay} />
-      )}
     </>
   );
 }

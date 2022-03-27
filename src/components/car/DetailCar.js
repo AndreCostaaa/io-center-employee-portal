@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
-export default function DetailCar() {
+export default function DetailCar({ setModifyingCar }) {
   const { carSelected, setCarSelected, getCarRegistrationImageById } =
     useData();
   const [visible, setVisible] = useState(true);
@@ -85,7 +85,10 @@ export default function DetailCar() {
                 ? "Cacher Carte Grise"
                 : "Afficher Carte Grise"}
             </Button>
-            <Button className="w-100 mt-3 border">
+            <Button
+              className="w-100 mt-3 border"
+              onClick={() => setModifyingCar(true)}
+            >
               Modifier cette voiture
             </Button>
             <Button

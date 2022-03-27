@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
-export default function DetailClient() {
+export default function DetailClient({ setModifyingClient }) {
   const { clientSelected, setClientSelected, setCarSelected } = useData();
   const [visible, setVisible] = useState(true);
   return (
@@ -21,7 +21,7 @@ export default function DetailClient() {
                   </h5>
                 </td>
                 <td>
-                  <h6 className="mt-1">{clientSelected.mobile}</h6>
+                  <h6 className="mt-1">{clientSelected.phone_number}</h6>
                 </td>
               </tr>
               <tr>
@@ -33,13 +33,18 @@ export default function DetailClient() {
                   </h6>
                 </td>
                 <td>
-                  <h6>{clientSelected.email}</h6>
+                  <h6>{clientSelected.email_address}</h6>
                 </td>
               </tr>
             </tbody>
           </Table>
           <div className="gx-1">
-            <Button className="w-100 border">Modifier ce Client</Button>
+            <Button
+              className="w-100 border"
+              onClick={() => setModifyingClient(true)}
+            >
+              Modifier ce Client
+            </Button>
             <Button
               className="w-100 mt-3 border"
               onClick={() => {

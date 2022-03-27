@@ -1,9 +1,10 @@
 import { useData } from "contexts/DataContext";
+import { useAuth } from "contexts/AuthContext";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Card, Dropdown, DropdownButton, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateClient() {
+export default function CreateService({ setCreating }) {
   const [service, setService] = useState("");
   const [machine, setMachine] = useState("");
   const [loading, setLoading] = useState(true);
@@ -15,13 +16,18 @@ export default function CreateClient() {
   const [description, setDescription] = useState("");
   const [servicesList, setServicesList] = useState([]);
   const [machineList, setMachineList] = useState([]);
-  const { createService, currentUser, carSelected } = useData();
+  const { createService, carSelected, getMachineList } = useData();
+  const { getCurrentUser } = useAuth();
   useEffect(() => {
     setServicesList(["Service", "Installation", "Réparation", "Optimisation"]);
-    setMachineList([
-      { id: 1, name: "v2" },
-      { id: 2, name: "v3" },
-    ]);
+    async function fetchData() {
+      await getMachineList().then((res) => {
+        if (res.status === 200) {
+          setMachineList(res.message);
+        }
+      });
+    }
+    fetchData();
     setLoading(false);
   }, []);
 
@@ -29,6 +35,7 @@ export default function CreateClient() {
     e.preventDefault();
     if (!kmRef.current.value) {
       kmRef.current.focus();
+      return;
     }
 
     let fd = new FormData();
@@ -46,8 +53,9 @@ export default function CreateClient() {
     fd.append("machine_id", machine ? machine.id : null);
     fd.append("gestan_id", gestanId);
     fd.append("vehicle_id", carSelected.id);
-    fd.append("mechanic_id", JSON.parse(localStorage.getItem("user")).id);
+    fd.append("mechanic_id", getCurrentUser().id);
     await createService(fd);
+    setCreating(false);
   }
   return loading ? (
     <h1> Loading </h1>
@@ -69,7 +77,7 @@ export default function CreateClient() {
               </Dropdown.Item>
             ))}
           </DropdownButton>
-          <h4 className="text-center mt-2">{"Type de Service: " + service}</h4>
+          <h4 className="text-center mt-2">{service}</h4>
           {service === "Optimisation" ? (
             <>
               <DropdownButton
@@ -77,14 +85,14 @@ export default function CreateClient() {
                 className="text-center mt-1 mb-1"
                 title="Machine utilisée"
               >
-                {machineList.map((machine) => (
-                  <Dropdown.Item onClick={() => setMachine(machine)}>
-                    {machine}
+                {machineList.map((machine, i) => (
+                  <Dropdown.Item key={i} onClick={() => setMachine(machine)}>
+                    {machine.name}
                   </Dropdown.Item>
                 ))}
               </DropdownButton>
               <h4 className="text-center mt-2">
-                {"Machine utilisée: " + machine}
+                {machine ? machine.name : ""}
               </h4>
             </>
           ) : (

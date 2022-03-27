@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
-  const { currentUser, logout, verifyStoredToken } = useContext(AuthContext);
+  const { getCurrentUser, logout, verifyStoredToken } = useAuth();
+  const [user, setCurrentUser] = useState(getCurrentUser());
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
       await verifyStoredToken().then((res) => {
@@ -23,7 +23,7 @@ export default function Dashboard() {
         <Card.Body>
           <h2 className="text-center mb-4">Dashboard</h2>{" "}
           <h3 className="text-center ">
-            Hello {currentUser && currentUser.name.split(" ")[0]}
+            Hello {user && user.name.split(" ")[0]}
           </h3>
           <Row className="gx-2 mt-4">
             <Button

@@ -7,7 +7,6 @@ export async function api_get(url, config) {
       return { status: response.status, data: response.data };
     })
     .catch((error) => {
-      console.log
       if (error) return { status: error.status };
       return { status: 500 };
     });
@@ -37,7 +36,7 @@ export async function api_delete(url, config) {
     });
   return result;
 }
-export async function api_patch(url, config, data) {
+export async function api_patch(url, data, config) {
   const result = await axios
     .patch(url, data, config)
     .then((response) => {
