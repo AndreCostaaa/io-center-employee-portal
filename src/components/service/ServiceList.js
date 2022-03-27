@@ -17,7 +17,6 @@ export default function DetailClient() {
         }
       });
     };
-    console.log("hello");
     fetchData();
   }, []);
   return (

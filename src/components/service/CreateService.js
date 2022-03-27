@@ -15,7 +15,7 @@ export default function CreateClient() {
   const [description, setDescription] = useState("");
   const [servicesList, setServicesList] = useState([]);
   const [machineList, setMachineList] = useState([]);
-  const { createService, currentUser } = useData();
+  const { createService, currentUser, carSelected } = useData();
   useEffect(() => {
     setServicesList(["Service", "Installation", "Réparation", "Optimisation"]);
     setMachineList([
@@ -34,19 +34,19 @@ export default function CreateClient() {
     let fd = new FormData();
 
     for (let i in picturesRef.current.files) {
-      fd.append("picture_" + i.toString(), picturesRef.current.files);
+      fd.append("picture_" + i.toString(), picturesRef.current.files[i]);
     }
     for (let i in filesRef.current.files) {
-      fd.append("picture_" + i.toString(), filesRef.current.files);
+      fd.append("file_" + i.toString(), filesRef.current.files[i]);
     }
     fd.append("type", service);
     fd.append("date", date);
     fd.append("km", kmRef.current.value);
     fd.append("description", description);
-    fd.append("machine_id", machine.id);
+    fd.append("machine_id", machine ? machine.id : null);
     fd.append("gestan_id", gestanId);
-    debugger;
-    fd.append("mechanic_id", currentUser.id);
+    fd.append("vehicle_id", carSelected.id);
+    fd.append("mechanic_id", JSON.parse(localStorage.getItem("user")).id);
     await createService(fd);
   }
   return loading ? (

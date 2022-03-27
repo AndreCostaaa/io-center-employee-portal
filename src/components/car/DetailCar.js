@@ -20,7 +20,7 @@ export default function DetailCar() {
       });
     };
     fetchData();
-  }, [carSelected.id, getCarRegistrationImageById]);
+  }, []);
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
