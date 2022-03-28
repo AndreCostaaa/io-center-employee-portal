@@ -9,7 +9,9 @@ export default function CarInformation(props) {
         "text-break" + (props.hovered ? " table-active" : " table-default")
       }
       style={{ wordWrap: "break-word" }}
-      onClick={(e) => (props.hovered ? props.callback(0) : props.callback(car))}
+      onClick={(e) =>
+        props.hovered ? props.callback(null) : props.callback(car)
+      }
     >
       <td>
         {car.brand.toUpperCase()} <br />

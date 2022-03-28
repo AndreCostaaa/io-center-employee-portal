@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Table } from "react-bootstrap";
-
+import { Button, Table } from "react-bootstrap";
 import { useData } from "../../contexts/DataContext";
+
 export default function Service({ props }) {
   const [mechanicName, setMechanicName] = useState();
   const [machineName, setMachineName] = useState();
-  const { getMechanicNameById, getToolNameById } = useData();
+  const [mediaLinkData, setMediaLinkData] = useState();
+  const { getServicePicturesById, getMechanicNameById, getToolNameById } =
+    useData();
   useEffect(() => {
     async function fetchData() {
       await getMechanicNameById(props.mechanic_id).then((res) => {
@@ -15,20 +17,33 @@ export default function Service({ props }) {
       });
     }
     fetchData();
-  }, []);
+  }, [props.mechanic_id]);
   useEffect(() => {
     async function fetchData() {
       await getToolNameById(props.machine_id).then((res) => {
         if (res.status === 200) {
-          console.log(res.message.name);
           setMachineName(res.message.name);
         }
       });
     }
-    if (props.machine_id != null) {
+    if (props.machine_id !== "null") {
       fetchData();
     }
-  }, []);
+  }, [getToolNameById, props.machine_id]);
+
+  useEffect(() => {
+    async function fetchData() {
+      await getServicePicturesById(props.id).then((res) => {
+        if (res.status === 200) {
+          let obj = {};
+          obj.href = res.message;
+          obj.download = "media_" + props.id.toString() + ".zip";
+          setMediaLinkData(obj);
+        }
+      });
+    }
+    fetchData();
+  }, [getServicePicturesById, props.id]);
   return (
     <div className="text-center">
       <Table>
@@ -74,7 +89,11 @@ export default function Service({ props }) {
         {props.description}
       </h6>
 
-      <Button className="w-100 mt-2">Détails</Button>
+      {mediaLinkData && (
+        <a href={mediaLinkData.href} download={mediaLinkData.download}>
+          <Button>Télécharger Images</Button>
+        </a>
+      )}
     </div>
   );
 }

@@ -7,15 +7,34 @@ import DetailClient from "../client/DetailClient";
 import ServiceList from "../service/ServiceList";
 import PatchClient from "components/client/PatchClient";
 import PatchCar from "components/car/PatchCar";
+import SearchCar from "components/car/SearchCar";
 
 export default function MainPage() {
   const [modifyingClient, setModifyingClient] = useState(false);
   const [modifyingCar, setModifyingCar] = useState(false);
-  const { clientSelected, carSelected, updateClientAndCarFromLocalStorage } =
-    useData();
+  const {
+    clientSelected,
+    carSelected,
+    updateClientAndCarFromLocalStorage,
+    setClientSelected,
+    getClientById,
+  } = useData();
   useEffect(() => {
     updateClientAndCarFromLocalStorage();
   }, []);
+
+  useEffect(() => {
+    const fetchClientData = async () => {
+      await getClientById(carSelected.owner_id).then((res) => {
+        if (res.status === 200) {
+          setClientSelected(res.message);
+        }
+      });
+    };
+    if (carSelected && !clientSelected) {
+      fetchClientData();
+    }
+  }, [carSelected]);
   return (
     <>
       <div className="mt-4">
@@ -41,7 +60,7 @@ export default function MainPage() {
             <SelectCar />
           )
         ) : (
-          ""
+          <SearchCar />
         )}
       </div>
       <div className="mt-4">{carSelected ? <ServiceList /> : ""}</div>

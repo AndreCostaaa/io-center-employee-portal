@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
   const { getCurrentUser, logout, verifyStoredToken } = useAuth();
-  const [user, setCurrentUser] = useState(getCurrentUser());
+  const user = getCurrentUser();
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       await verifyStoredToken().then((res) => {
-        if (res.status != 200) {
+        if (res.status !== 200) {
           navigate("/login");
         }
       });
@@ -25,31 +25,28 @@ export default function Dashboard() {
           <h3 className="text-center ">
             Hello {user && user.name.split(" ")[0]}
           </h3>
-          <Row className="gx-2 mt-4">
+          <Button
+            onClick={() => navigate("/new")}
+            className="w-100 mt-2 border"
+          >
+            Nouveau
+          </Button>
+          <Button
+            onClick={() => navigate("/search")}
+            className="w-100 mt-2 border"
+          >
+            Rechercher Voiture
+          </Button>
+          {user.role === "admin" ? (
             <Button
-              onClick={() => navigate("/new")}
-              className="w-50 mt-2 border"
-              as={Col}
+              onClick={() => navigate("/admin-portal")}
+              className="w-100 mt-2 border"
             >
-              Nouveau
+              Portal Admin
             </Button>
-            <Button
-              onClick={() => navigate("/search")}
-              className="w-50 mt-2 border"
-              as={Col}
-            >
-              Rechercher
-            </Button>
-          </Row>{" "}
-          <Row className="gx-2">
-            <Button
-              onClick={() => navigate("/create-client")}
-              className="w-50 mt-2 border"
-              as={Col}
-            >
-              Nouveau
-            </Button>
-          </Row>{" "}
+          ) : (
+            ""
+          )}
           <Button
             onClick={() => {
               logout();

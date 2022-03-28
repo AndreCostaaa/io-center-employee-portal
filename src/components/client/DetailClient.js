@@ -46,7 +46,7 @@ export default function DetailClient({ setModifyingClient }) {
               Modifier ce Client
             </Button>
             <Button
-              className="w-100 mt-3 border"
+              className="w-100 mt-2 border"
               onClick={() => {
                 setClientSelected(null);
                 setCarSelected(null);

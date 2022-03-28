@@ -1,4 +1,4 @@
-import { api_get, api_post, api_patch } from "../api/api";
+import { api_get, api_post, api_patch, api_delete } from "../api/api";
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 export const DataContext = React.createContext(null);
@@ -94,11 +94,12 @@ export default function DataProvider({ children }) {
   async function getCarsFromClient(owner_id) {
     const auth = getBearerAuthConfig();
     const config = {
-      auth,
+      headers: auth.headers,
       params: {
         owner_id: owner_id,
       },
     };
+
     const res = await api_get(
       process.env.REACT_APP_API_VEHICLE_END_POINT,
       config
@@ -142,7 +143,24 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
-
+  async function createTool(data) {
+    const config = getPostHeaders();
+    const res = await api_post(
+      process.env.REACT_APP_API_TOOL_END_POINT,
+      data,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 201:
+        message = res.data;
+        break;
+      default:
+        message = "Error occured. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
   async function createService(data) {
     const config = getPostHeaders();
     const res = await api_post(
@@ -164,7 +182,7 @@ export default function DataProvider({ children }) {
   async function getServicesDone(car_id) {
     const headers = getBearerAuthConfig();
     const config = {
-      headers,
+      headers: headers.headers,
       params: {
         vehicle_id: car_id,
       },
@@ -227,7 +245,6 @@ export default function DataProvider({ children }) {
 
     return { status: res.status, message: message };
   }
-
   async function getMechanicNameById(id) {
     const headers = getBearerAuthConfig();
     const config = {
@@ -274,7 +291,6 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
-
   async function patchClient(data) {
     const config = getPostHeaders();
     const res = await api_patch(
@@ -337,7 +353,6 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
-
   async function getServicePicturesById(id) {
     const headers = getBearerAuthConfig();
     const config = {
@@ -354,8 +369,7 @@ export default function DataProvider({ children }) {
     let message;
     switch (res.status) {
       case 200:
-        new Blob([data], { type: 'application/zip' })
-        message = URL.createObjectURL(res.data);
+        message = window.URL.createObjectURL(res.data);
         break;
       case 404:
         message = "No Data";
@@ -368,6 +382,148 @@ export default function DataProvider({ children }) {
         break;
     }
 
+    return { status: res.status, message: message };
+  }
+  async function getCarFilesById(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: { id: id, media: "file" },
+      responseType: "blob",
+    };
+
+    const res = await api_get(
+      process.env.REACT_APP_API_VEHICLE_MEDIA_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = window.URL.createObjectURL(res.data);
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
+  async function getAllTools() {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+    };
+    const res = await api_get(process.env.REACT_APP_API_TOOL_END_POINT, config);
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function deleteTool(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: {
+        id: id,
+      },
+    };
+
+    const res = await api_delete(
+      process.env.REACT_APP_API_TOOL_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = "Deleted";
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
+  async function getAllCars() {
+    const config = getBearerAuthConfig();
+    const res = await api_get(
+      process.env.REACT_APP_API_VEHICLE_END_POINT,
+      config
+    );
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function getClientById(id) {
+    const auth = getBearerAuthConfig();
+    const config = {
+      headers: auth.headers,
+      params: {
+        id: id,
+      },
+    };
+
+    const res = await api_get(
+      process.env.REACT_APP_API_CLIENT_END_POINT,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session Expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      case 404:
+        message = "No Car Found";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
     return { status: res.status, message: message };
   }
   const value = {
@@ -390,6 +546,13 @@ export default function DataProvider({ children }) {
     patchClient,
     patchCar,
     getToolNameById,
+    getServicePicturesById,
+    getCarFilesById,
+    getAllTools,
+    createTool,
+    deleteTool,
+    getAllCars,
+    getClientById,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

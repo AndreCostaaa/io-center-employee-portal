@@ -211,10 +211,11 @@ export default function SelectClient() {
             Nouveau Client
           </Button>
         </Card.Body>
+
+        {!clientSelected && (
+          <ClientSearchResults clientsToDisplay={clientsToDisplay} />
+        )}
       </Card>
-      {!clientSelected && (
-        <ClientSearchResults clientsToDisplay={clientsToDisplay} />
-      )}
     </>
   );
 }

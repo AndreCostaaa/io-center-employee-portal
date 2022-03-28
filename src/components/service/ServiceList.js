@@ -28,7 +28,7 @@ export default function DetailClient() {
       {visible ? (
         <Card.Body>
           <Button
-            className="w-100 mb-2"
+            className="w-100"
             onClick={() => {
               setCreating(!creating);
             }}

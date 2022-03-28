@@ -10,7 +10,7 @@ export default function DisplayCars({ cars }) {
 
   return (
     <>
-      {cars.length > 0 ? (
+      {cars && cars.length > 0 ? (
         <Table className="text-center">
           <thead>
             <tr>
@@ -29,14 +29,15 @@ export default function DisplayCars({ cars }) {
             </tr>
           </thead>
           <tbody>
-            {cars.map((car, idx) => (
-              <CarInformation
-                key={idx}
-                car={car}
-                callback={setCarHovered}
-                hovered={carHovered && carHovered.id === car.id}
-              />
-            ))}
+            {cars &&
+              cars.map((car, idx) => (
+                <CarInformation
+                  key={idx}
+                  car={car}
+                  callback={setCarHovered}
+                  hovered={carHovered && carHovered.id === car.id}
+                />
+              ))}
           </tbody>
         </Table>
       ) : (
