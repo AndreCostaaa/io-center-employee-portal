@@ -19,7 +19,7 @@ export default function DetailClient() {
   };
   useEffect(() => {
     fetchServicesData();
-  }, []);
+  }, [creating]);
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>

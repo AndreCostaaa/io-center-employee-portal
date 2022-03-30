@@ -9,6 +9,7 @@ import MainPage from "./main-pages/MainPage.js";
 import Login from "./main-pages/Login.js";
 import AdminPortal from "./main-pages/AdminPortal.js";
 import ToolDashboard from "./tool/ToolDashboard.js";
+import logo from "../logo.png";
 function App() {
   return (
     <Container
@@ -17,7 +18,7 @@ function App() {
     >
       <div className="w=100">
         <a href="/dashboard" className="text-decoration-none">
-          <h1 className="mb-5">IO Center Employee Portal</h1>
+          <img src={logo}></img>
         </a>
         <Router>
           <AuthProvider>

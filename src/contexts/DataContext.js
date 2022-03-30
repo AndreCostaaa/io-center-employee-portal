@@ -526,6 +526,37 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
+  async function getCarMediaById(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: { id: id, media: "media" },
+      responseType: "blob",
+    };
+
+    const res = await api_get(
+      process.env.REACT_APP_API_VEHICLE_MEDIA_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = window.URL.createObjectURL(res.data);
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
   const value = {
     setCarSelected,
     searchResults,
@@ -553,6 +584,7 @@ export default function DataProvider({ children }) {
     deleteTool,
     getAllCars,
     getClientById,
+    getCarMediaById,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

@@ -3,28 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Card, Table, Button } from "react-bootstrap";
 import Tool from "./Tool";
 
-export default function ToolList() {
-  const [toolList, setToolList] = useState();
+export default function ToolList({ toolList, setFetchData }) {
   const { getAllTools, deleteTool } = useData();
   const [toolHovered, setToolHovered] = useState(null);
 
-  async function fetchTools() {
-    await getAllTools().then((res) => {
-      if (res.status === 200) {
-        setToolList(res.message);
-      }
-    });
-  }
   async function deleteBtnClicked() {
     await deleteTool(toolHovered.id).then((res) => {
       if (res.status === 200) {
-        fetchTools();
+        setFetchData(true);
       }
     });
   }
-  useEffect(() => {
-    fetchTools();
-  }, []);
 
   return (
     <Card>
@@ -55,9 +44,6 @@ export default function ToolList() {
             Supprimer Outil
           </Button>
         )}
-        <Button className="w-100 mt-2" onClick={fetchTools}>
-          Refresh
-        </Button>
       </Card.Body>
     </Card>
   );

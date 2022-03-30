@@ -37,7 +37,8 @@ export default function AuthProvider({ children }) {
   }
   function getToken() {
     const user = getCurrentUser();
-    return `Bearer ${user.access_token}`;
+
+    return `Bearer ${user ? user.access_token : ""}`;
   }
 
   async function verifyStoredToken() {

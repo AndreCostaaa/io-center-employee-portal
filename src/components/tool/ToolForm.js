@@ -2,7 +2,7 @@ import { useData } from "contexts/DataContext";
 import React, { useState } from "react";
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 
-export default function ToolForm() {
+export default function ToolForm({ setFetchData }) {
   const [name, setName] = useState("");
   const { createTool } = useData();
 
@@ -12,7 +12,11 @@ export default function ToolForm() {
     }
     let fd = new FormData();
     fd.append("name", name);
-    await createTool(fd);
+    await createTool(fd).then((res) => {
+      if (res.status === 201) {
+        setFetchData(true);
+      }
+    });
   }
   return (
     <Card>

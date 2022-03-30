@@ -5,9 +5,7 @@ import { useData } from "contexts/DataContext";
 import DisplayCars from "./DisplayCars";
 
 export default function SearchCar() {
-  const [brand, setBrand] = useState("");
-  const [model, setModel] = useState("");
-  const [date, setDate] = useState("");
+  const [brandAndModel, setBrandAndModel] = useState("");
   const [chassisNo, setChassisNo] = useState("");
   const [licensePlate, setLicensePlate] = useState("");
   const [receptionType, setReceptionType] = useState("");
@@ -18,12 +16,56 @@ export default function SearchCar() {
     const fetchData = async () => {
       await getAllCars().then((res) => {
         if (res.status === 200) {
-          setCarsToDisplay(res.message);
+          setCarsList(res.message);
         }
       });
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!carsList) {
+      return;
+    }
+    setCarsToDisplay(
+      carsList.filter((element) => {
+        if (!brandAndModel && !chassisNo && !licensePlate && !receptionType) {
+          return false;
+        }
+        if (
+          brandAndModel &&
+          !element.brand.toLowerCase().includes(brandAndModel.toLowerCase()) &&
+          !element.model.toLowerCase().includes(brandAndModel.toLowerCase())
+        ) {
+          return false;
+        }
+        if (
+          chassisNo &&
+          !element.chassisNo.toLowerCase().includes(chassisNo.toLowerCase())
+        ) {
+          return false;
+        }
+        if (
+          licensePlate &&
+          !element.license_plate
+            .toLowerCase()
+            .includes(licensePlate.toLowerCase())
+        ) {
+          return false;
+        }
+        if (
+          receptionType &&
+          !element.reception_type
+            .toLowerCase()
+            .includes(receptionType.toLowerCase())
+        ) {
+          return false;
+        }
+        return true;
+      })
+    );
+  }, [brandAndModel, chassisNo, licensePlate, receptionType]);
+
   return (
     <>
       <Card>
@@ -34,17 +76,10 @@ export default function SearchCar() {
           <Form>
             <Row>
               <Form.Group as={Col}>
-                <Form.Label>Marque</Form.Label>
+                <Form.Label>Marque & Modèle</Form.Label>
                 <Form.Control
                   type="text"
-                  onChange={(e) => setBrand(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group as={Col}>
-                <Form.Label>Modèle</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={(e) => setModel(e.target.value)}
+                  onChange={(e) => setBrandAndModel(e.target.value)}
                 />
               </Form.Group>
             </Row>

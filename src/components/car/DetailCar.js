@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Table } from "react-bootstrap";
+import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailCar({ setModifyingCar }) {
@@ -8,6 +8,7 @@ export default function DetailCar({ setModifyingCar }) {
     setCarSelected,
     getCarRegistrationImageById,
     getCarFilesById,
+    getCarMediaById,
   } = useData();
   const [visible, setVisible] = useState(true);
   const [showingRegistrationImage, setShowingRegistrationImage] =
@@ -15,6 +16,7 @@ export default function DetailCar({ setModifyingCar }) {
 
   const [carRegistrationImage, setCarRegistrationImage] = useState();
   const [fileLinkData, setFileLinkData] = useState();
+  const [mediaLinkData, setMediaLinkData] = useState();
   useEffect(() => {
     const fetchData = async () => {
       await getCarRegistrationImageById(carSelected.id).then((res) => {
@@ -26,19 +28,33 @@ export default function DetailCar({ setModifyingCar }) {
     fetchData();
   }, [getCarRegistrationImageById, carSelected.id]);
 
-  useEffect(() => {
-    async function fetchData() {
-      await getCarFilesById(carSelected.id).then((res) => {
-        if (res.status === 200) {
-          let obj = {};
-          obj.href = res.message;
-          obj.download = "files_" + carSelected.id.toString() + ".zip";
-          setFileLinkData(obj);
-        }
-      });
-    }
-    fetchData();
-  }, [getCarFilesById, carSelected.id]);
+  async function downloadCarFiles() {
+    await getCarFilesById(carSelected.id).then((res) => {
+      if (res.status === 200) {
+        const link = document.createElement("a");
+        link.href = res.message;
+        link.download = "files_" + carSelected.id.toString() + ".zip"; //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      } else {
+        console.log("error");
+      }
+    });
+  }
+  async function downloadCarMedia() {
+    await getCarMediaById(carSelected.id).then((res) => {
+      if (res.status === 200) {
+        const link = document.createElement("a");
+        link.href = res.message;
+        link.download = "media_" + carSelected.id.toString() + ".zip"; //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      } else {
+        console.log("error");
+      }
+    });
+  }
+
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
@@ -80,29 +96,30 @@ export default function DetailCar({ setModifyingCar }) {
               </tr>
             </tbody>
           </Table>
-          <div className="gx-1 text-center">
-            <div>
-              {fileLinkData && (
-                <a
-                  className="text-center"
-                  href={fileLinkData.href}
-                  download={fileLinkData.download}
-                >
-                  <Button>Télécharger Fichiers</Button>
-                </a>
+          <div className="gx-2">
+            <Row>
+              <div>
+                <Button className="border w-50" onClick={downloadCarFiles}>
+                  Télécharger Fichiers
+                </Button>
+                <Button className="border w-50" onClick={downloadCarMedia}>
+                  Télécharger Photos
+                </Button>
+              </div>
+            </Row>
+            <div className="text-center">
+              {showingRegistrationImage ? (
+                <img
+                  src={carRegistrationImage}
+                  max-width="700"
+                  height="200"
+                  alt="Carte grise non trouvée"
+                  className="align-center"
+                ></img>
+              ) : (
+                ""
               )}
             </div>
-            {showingRegistrationImage ? (
-              <img
-                src={carRegistrationImage}
-                max-width="700"
-                height="200"
-                alt="Carte grise non trouvée"
-                className="align-center"
-              ></img>
-            ) : (
-              ""
-            )}
             <Button
               className="w-100 border mt-2"
               onClick={() =>
