@@ -10,6 +10,7 @@ import Login from "./main-pages/Login.js";
 import AdminPortal from "./main-pages/AdminPortal.js";
 import ToolDashboard from "./tool/ToolDashboard.js";
 import logo from "../logo.png";
+import UserDashboard from "./user/UserDashboard.js";
 function App() {
   return (
     <Container
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/new" element={<MainPage />} />
                 <Route path="/admin-portal" element={<AdminPortal />} />
                 <Route path="/tool" element={<ToolDashboard />} />
+                <Route path="/user" element={<UserDashboard />} />
               </Routes>
             </DataProvider>
           </AuthProvider>

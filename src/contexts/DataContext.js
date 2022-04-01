@@ -557,6 +557,86 @@ export default function DataProvider({ children }) {
 
     return { status: res.status, message: message };
   }
+  async function getAllUsers() {
+    const config = getBearerAuthConfig();
+    const res = await api_get(process.env.REACT_APP_API_USER_END_POINT, config);
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function deleteUser(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: {
+        id: id,
+      },
+    };
+
+    const res = await api_delete(
+      process.env.REACT_APP_API_USER_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = "Deleted";
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
+  async function createUser(data) {
+    const config = getBearerAuthConfig();
+    const res = await api_post(
+      process.env.REACT_APP_API_REGISTER_END_POINT,
+      data,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 201:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 409:
+        message = "Username taken";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
   const value = {
     setCarSelected,
     searchResults,
@@ -585,6 +665,9 @@ export default function DataProvider({ children }) {
     getAllCars,
     getClientById,
     getCarMediaById,
+    getAllUsers,
+    deleteUser,
+    createUser,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

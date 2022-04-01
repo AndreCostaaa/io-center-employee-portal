@@ -21,6 +21,9 @@ export default function AdminPortal() {
         <Button onClick={() => navigate("/tool")} className="w-100 mt-2 border">
           Gèrer outils
         </Button>
+        <Button onClick={() => navigate("/user")} className="w-100 mt-2 border">
+          Gèrer utilisateurs
+        </Button>
       </Card.Body>
     </Card>
   );
