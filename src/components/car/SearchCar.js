@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Form, Row } from "react-bootstrap";
-import DisplaySearchResults from "../search/SearchResults";
 import { useData } from "contexts/DataContext";
 import DisplayCars from "./DisplayCars";
 
@@ -21,6 +20,7 @@ export default function SearchCar() {
       });
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -64,6 +64,7 @@ export default function SearchCar() {
         return true;
       })
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandAndModel, chassisNo, licensePlate, receptionType]);
 
   return (

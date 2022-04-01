@@ -19,6 +19,7 @@ export default function DetailClient() {
   };
   useEffect(() => {
     fetchServicesData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creating]);
   return (
     <Card>

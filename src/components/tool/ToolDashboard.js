@@ -20,6 +20,7 @@ export default function ToolDashboard() {
       fetchTools();
       setFetchData(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchData]);
 
   return (

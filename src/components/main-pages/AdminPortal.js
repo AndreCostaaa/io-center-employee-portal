@@ -10,7 +10,7 @@ export default function AdminPortal() {
     if (getCurrentUser().role !== "admin") {
       navigate("/login");
     }
-  }, [getCurrentUser]);
+  }, [getCurrentUser, navigate]);
 
   return (
     <Card>

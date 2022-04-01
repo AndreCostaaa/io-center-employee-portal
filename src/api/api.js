@@ -32,7 +32,7 @@ export async function api_delete(url, config) {
       return { status: response.status, data: response.data };
     })
     .catch((error) => {
-      return { status: error.status };
+      return { status: error.response.status };
     });
   return result;
 }

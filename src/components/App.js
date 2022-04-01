@@ -11,6 +11,7 @@ import AdminPortal from "./main-pages/AdminPortal.js";
 import ToolDashboard from "./tool/ToolDashboard.js";
 import logo from "../logo.png";
 import UserDashboard from "./user/UserDashboard.js";
+import ChangePassword from "./user/ChangePassword.js";
 function App() {
   return (
     <Container
@@ -18,8 +19,8 @@ function App() {
       style={{ minHeight: "100vh" }}
     >
       <div className="w=100">
-        <a href="/dashboard" className="text-decoration-none">
-          <img src={logo}></img>
+        <a href="/dashboard">
+          <img src={logo} alt="Couldn't find logo"></img>
         </a>
         <Router>
           <AuthProvider>
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/admin-portal" element={<AdminPortal />} />
                 <Route path="/tool" element={<ToolDashboard />} />
                 <Route path="/user" element={<UserDashboard />} />
+                <Route path="/change-password" element={<ChangePassword />} />
               </Routes>
             </DataProvider>
           </AuthProvider>

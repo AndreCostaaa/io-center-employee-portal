@@ -17,10 +17,11 @@ export default function Dashboard() {
       });
     };
     setUser(getCurrentUser());
-    if (user == "null") {
+    if (user === "null") {
       navigate("/login");
     }
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -52,10 +53,19 @@ export default function Dashboard() {
             )}
             <Button
               onClick={() => {
+                navigate("/change-password");
+              }}
+              className="w-100 mt-2 border"
+              as={Col}
+            >
+              Modifier Mot de Passe
+            </Button>
+            <Button
+              onClick={() => {
                 logout();
                 navigate("/login");
               }}
-              className="w-100 mt-5 border"
+              className="w-100 mt-2 border"
               as={Col}
             >
               Logout

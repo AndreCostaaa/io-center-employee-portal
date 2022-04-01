@@ -1,10 +1,10 @@
 import { useData } from "contexts/DataContext";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Card, Table, Button } from "react-bootstrap";
 import Tool from "./Tool";
 
 export default function ToolList({ toolList, setFetchData }) {
-  const { getAllTools, deleteTool } = useData();
+  const { deleteTool } = useData();
   const [toolHovered, setToolHovered] = useState(null);
 
   async function deleteBtnClicked() {

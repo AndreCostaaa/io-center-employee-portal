@@ -592,9 +592,13 @@ export default function DataProvider({ children }) {
     );
 
     let message;
+    console.log(res);
     switch (res.status) {
       case 200:
         message = "Deleted";
+        break;
+      case 401:
+        message = "Unauthorized";
         break;
       case 404:
         message = "No Data";

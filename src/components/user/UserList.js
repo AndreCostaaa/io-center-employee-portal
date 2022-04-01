@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Table, Alert } from "react-bootstrap";
 import User from "./User";
 
-export default function UserList({ users }) {
+export default function UserList({ users, setDataChanged }) {
   const [userHovered, setUserHovered] = useState();
   const [error, setError] = useState();
   const { deleteUser } = useData();
@@ -19,7 +19,14 @@ export default function UserList({ users }) {
       setError("Can't delete yourself");
       return;
     }
-    await deleteUser(userHovered.id);
+    await deleteUser(userHovered.id).then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        setDataChanged(true);
+      } else if (res.status === 401) {
+        setError("Unauthorized");
+      }
+    });
   }
   useEffect(() => {
     if (userHovered) {

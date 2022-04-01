@@ -1,14 +1,18 @@
+import { useAuth } from "contexts/AuthContext";
 import { useData } from "contexts/DataContext";
 import React, { useEffect, useState } from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import UserForm from "./UserForm";
 import UserList from "./UserList";
 
 export default function UserDashboard() {
   const [creatingUser, setCreatingUser] = useState(false);
-
+  const [fetchData, setFetchData] = useState(false);
   const [userList, setUserList] = useState();
+  const navigate = useNavigate();
   const { getAllUsers } = useData();
+  const { getCurrentUser } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       await getAllUsers().then((res) => {
@@ -17,16 +21,30 @@ export default function UserDashboard() {
         }
       });
     };
-    fetchData();
-  }, [creatingUser]);
+    if (fetchData) {
+      fetchData();
+      setFetchData(false);
+    }
+  }, [fetchData, getAllUsers]);
+
+  useEffect(() => {
+    if (getCurrentUser().role !== "admin") {
+      navigate("/dashboard");
+    }
+  }, [getCurrentUser, navigate]);
   return (
     <>
       <div>
-        <UserList users={userList} />
+        <UserList users={userList} setDataChanged={setFetchData} />
       </div>
 
-      <div className="mt-2 text-center">
-        {creatingUser && <UserForm />}
+      <div className="mt-2">
+        {creatingUser && (
+          <UserForm
+            setCreating={setCreatingUser}
+            setDataChanged={setFetchData}
+          />
+        )}
         <Button
           className="w-100 mt-2"
           onClick={() => setCreatingUser(!creatingUser)}

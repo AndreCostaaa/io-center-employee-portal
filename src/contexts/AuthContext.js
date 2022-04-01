@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { api_post } from "../api/api.js";
+import React, { useContext } from "react";
+import { api_post, api_patch } from "../api/api.js";
 export const AuthContext = React.createContext(null);
 
 export function useAuth() {
@@ -74,6 +74,29 @@ export default function AuthProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
+  async function changeUser(data) {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: getToken(),
+      },
+    };
+    const res = await api_patch(
+      process.env.REACT_APP_API_USER_END_POINT,
+      data,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      default:
+        message = "Error occurred. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
   function logout() {
     localStorage.clear();
   }
@@ -84,12 +107,14 @@ export default function AuthProvider({ children }) {
     }
     return JSON.parse(storedUser);
   }
+
   const value = {
     login,
     logout,
     verifyStoredToken,
     getToken,
     getCurrentUser,
+    changeUser,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

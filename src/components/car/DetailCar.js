@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import { Button, Card, Row, Table } from "react-bootstrap";
 import { useData } from "contexts/DataContext";
 
 export default function DetailCar({ setModifyingCar }) {
@@ -15,8 +15,6 @@ export default function DetailCar({ setModifyingCar }) {
     useState(false);
 
   const [carRegistrationImage, setCarRegistrationImage] = useState();
-  const [fileLinkData, setFileLinkData] = useState();
-  const [mediaLinkData, setMediaLinkData] = useState();
   useEffect(() => {
     const fetchData = async () => {
       await getCarRegistrationImageById(carSelected.id).then((res) => {
