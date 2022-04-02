@@ -10,7 +10,7 @@ export default function DetailCar({ setModifyingCar }) {
     getCarFilesById,
     getCarMediaById,
   } = useData();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [showingRegistrationImage, setShowingRegistrationImage] =
     useState(false);
 

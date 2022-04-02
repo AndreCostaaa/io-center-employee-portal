@@ -41,7 +41,7 @@ export default function SearchCar() {
         }
         if (
           chassisNo &&
-          !element.chassisNo.toLowerCase().includes(chassisNo.toLowerCase())
+          !element.chassis_no.toLowerCase().includes(chassisNo.toLowerCase())
         ) {
           return false;
         }

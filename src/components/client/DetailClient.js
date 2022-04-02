@@ -4,7 +4,7 @@ import { useData } from "contexts/DataContext";
 
 export default function DetailClient({ setModifyingClient }) {
   const { clientSelected, setClientSelected, setCarSelected } = useData();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   return (
     <Card>
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
