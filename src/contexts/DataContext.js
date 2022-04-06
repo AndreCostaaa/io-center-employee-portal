@@ -384,6 +384,37 @@ export default function DataProvider({ children }) {
 
     return { status: res.status, message: message };
   }
+  async function getServicePictureById(service_id, picture_id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: { id: service_id, picture: picture_id },
+      responseType: "blob",
+    };
+
+    const res = await api_get(
+      process.env.REACT_APP_API_SERVICE_MEDIA_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = window.URL.createObjectURL(res.data);
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
   async function getCarFilesById(id) {
     const headers = getBearerAuthConfig();
     const config = {
@@ -672,6 +703,7 @@ export default function DataProvider({ children }) {
     getAllUsers,
     deleteUser,
     createUser,
+    getServicePictureById
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

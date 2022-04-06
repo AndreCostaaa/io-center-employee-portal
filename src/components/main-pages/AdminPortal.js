@@ -13,15 +13,23 @@ export default function AdminPortal() {
   }, [getCurrentUser, navigate]);
 
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Portal Admin</h2>
       </Card.Header>
       <Card.Body>
-        <Button onClick={() => navigate("/tool")} className="w-100 mt-2 border">
+        <Button
+          variant="dark"
+          onClick={() => navigate("/tool")}
+          className="w-100 mt-2 border"
+        >
           Gèrer outils
         </Button>
-        <Button onClick={() => navigate("/user")} className="w-100 mt-2 border">
+        <Button
+          variant="dark"
+          onClick={() => navigate("/user")}
+          className="w-100 mt-2 border"
+        >
           Gèrer utilisateurs
         </Button>
       </Card.Body>

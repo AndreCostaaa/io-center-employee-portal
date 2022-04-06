@@ -7,7 +7,7 @@ export default function ClientSearchResults({ clientsToDisplay }) {
   const [clientHovered, setClientHovered] = useState();
   const { setClientSelected } = useData();
   return (
-    <Card className="mt-2">
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Clients Existants</h2>
       </Card.Header>
@@ -39,6 +39,7 @@ export default function ClientSearchResults({ clientsToDisplay }) {
         )}
         {clientHovered && (
           <Button
+            variant="dark"
             className="w-100 mt-3"
             onClick={() => setClientSelected(clientHovered)}
           >

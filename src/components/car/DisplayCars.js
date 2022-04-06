@@ -44,7 +44,11 @@ export default function DisplayCars({ cars }) {
         <h4 className="text-center">Aucune voiture trouvée</h4>
       )}
       {carHovered && carHovered.id > 0 ? (
-        <Button className="w-100" onClick={() => setCarSelected(carHovered)}>
+        <Button
+          variant="dark"
+          className="w-100"
+          onClick={() => setCarSelected(carHovered)}
+        >
           Selectionner
         </Button>
       ) : (

@@ -10,7 +10,7 @@ export default function DetailCar({ setModifyingCar }) {
     getCarFilesById,
     getCarMediaById,
   } = useData();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [showingRegistrationImage, setShowingRegistrationImage] =
     useState(false);
 
@@ -54,7 +54,7 @@ export default function DetailCar({ setModifyingCar }) {
   }
 
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
         <h2>Voiture</h2>
       </Card.Header>
@@ -97,10 +97,18 @@ export default function DetailCar({ setModifyingCar }) {
           <div className="gx-2">
             <Row>
               <div>
-                <Button className="border w-50" onClick={downloadCarFiles}>
+                <Button
+                  className="border w-50"
+                  variant="dark"
+                  onClick={downloadCarFiles}
+                >
                   Télécharger Fichiers
                 </Button>
-                <Button className="border w-50" onClick={downloadCarMedia}>
+                <Button
+                  className="border w-50"
+                  variant="dark"
+                  onClick={downloadCarMedia}
+                >
                   Télécharger Photos
                 </Button>
               </div>
@@ -119,6 +127,7 @@ export default function DetailCar({ setModifyingCar }) {
               )}
             </div>
             <Button
+              variant="dark"
               className="w-100 border mt-2"
               onClick={() =>
                 setShowingRegistrationImage(!showingRegistrationImage)
@@ -129,12 +138,14 @@ export default function DetailCar({ setModifyingCar }) {
                 : "Afficher Carte Grise"}
             </Button>
             <Button
+              variant="dark"
               className="w-100 mt-1 border"
               onClick={() => setModifyingCar(true)}
             >
               Modifier cette voiture
             </Button>
             <Button
+              variant="dark"
               className="w-100 mt-1 border"
               onClick={() => {
                 setCarSelected(null);

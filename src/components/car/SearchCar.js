@@ -10,7 +10,7 @@ export default function SearchCar() {
   const [receptionType, setReceptionType] = useState("");
   const [carsToDisplay, setCarsToDisplay] = useState();
   const [carsList, setCarsList] = useState();
-  const { getAllCars } = useData();
+  const { getAllCars, carSelected } = useData();
   useEffect(() => {
     const fetchData = async () => {
       await getAllCars().then((res) => {
@@ -69,7 +69,15 @@ export default function SearchCar() {
 
   return (
     <>
-      <Card>
+      <Card className="bg-transparent">
+        <Card.Header>
+          <h2 className="text-center">Liste de Voitures</h2>
+        </Card.Header>
+        <Card.Body>
+          <DisplayCars cars={carsToDisplay} />
+        </Card.Body>
+      </Card>
+      <Card className="mt-2 bg-transparent">
         <Card.Header>
           <h2 className="text-center">Voiture</h2>
         </Card.Header>
@@ -107,15 +115,6 @@ export default function SearchCar() {
             </Form.Group>
           </Form>
         </Card.Body>
-
-        <Card className="mt-2">
-          <Card.Header>
-            <h2 className="text-center">Liste de Voitures</h2>
-          </Card.Header>
-          <Card.Body>
-            <DisplayCars cars={carsToDisplay} />
-          </Card.Body>
-        </Card>
       </Card>
     </>
   );

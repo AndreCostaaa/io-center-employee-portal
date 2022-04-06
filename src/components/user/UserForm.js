@@ -61,7 +61,7 @@ export default function UserForm({ setDataChanged, setCreating }) {
     });
   }
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Créer Utilisateur</h2>
       </Card.Header>
@@ -118,7 +118,11 @@ export default function UserForm({ setDataChanged, setCreating }) {
               <option>Admin</option>
             </Form.Select>
           </FormGroup>
-          <Button className="mt-2 w-100" onClick={createBtnClicked}>
+          <Button
+            variant="dark"
+            className="mt-2 w-100"
+            onClick={createBtnClicked}
+          >
             Create
           </Button>
         </Form>

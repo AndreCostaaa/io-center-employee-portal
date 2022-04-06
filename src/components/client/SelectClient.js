@@ -18,19 +18,14 @@ export default function SelectClient() {
   const inputRefArr = useRef([]);
   const [clients, setClients] = useState();
   const [clientsToDisplay, setClientsToDisplay] = useState();
-  const {
-    createClient,
-    getAllClients,
-    clientSelected,
-    setClientSelected,
-    patchClient,
-  } = useData();
+  const { createClient, getAllClients, clientSelected } = useData();
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAllClients().then((data) => {
-        if (data.status) {
-          setClients(data.message);
+      await getAllClients().then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setClients(res.message);
         }
       });
     };
@@ -129,7 +124,9 @@ export default function SelectClient() {
   }
   return (
     <>
-      <Card>
+      <ClientSearchResults clientsToDisplay={clientsToDisplay} />
+
+      <Card className="mt-2 bg-transparent">
         <Card.Header>
           <h2 className="text-center">Client</h2>
         </Card.Header>
@@ -207,14 +204,10 @@ export default function SelectClient() {
               </Form.Group>
             </Row>
           </Form>
-          <Button className="w-100 mt-3" onClick={handleCreate}>
+          <Button variant="dark" className="w-100 mt-3" onClick={handleCreate}>
             Nouveau Client
           </Button>
         </Card.Body>
-
-        {!clientSelected && (
-          <ClientSearchResults clientsToDisplay={clientsToDisplay} />
-        )}
       </Card>
     </>
   );

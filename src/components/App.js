@@ -1,7 +1,7 @@
 import AuthProvider from "contexts/AuthContext.js";
 import DataProvider from "contexts/DataContext.js";
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Container, Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Dashboard from "./main-pages/Dashboard.js";
@@ -9,19 +9,28 @@ import MainPage from "./main-pages/MainPage.js";
 import Login from "./main-pages/Login.js";
 import AdminPortal from "./main-pages/AdminPortal.js";
 import ToolDashboard from "./tool/ToolDashboard.js";
-import logo from "../logo.png";
+import logo from "../media/logo.png";
+import background from "../media/background.jpg";
 import UserDashboard from "./user/UserDashboard.js";
 import ChangePassword from "./user/ChangePassword.js";
+
 function App() {
   return (
-    <Container
-      className=" d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#f7f7f7",
+      }}
+      className="text-black"
     >
-      <div className="w=100">
-        <a href="/dashboard">
-          <img src={logo} alt="Couldn't find logo"></img>
-        </a>
+      <a href="/dashboard">
+        <img src={logo} alt="Couldn't find logo"></img>
+      </a>
+
+      <Container
+        className="d-flex justify-content-center"
+        style={{ maxWidth: "90vh" }}
+      >
         <Router>
           <AuthProvider>
             <DataProvider>
@@ -38,8 +47,8 @@ function App() {
             </DataProvider>
           </AuthProvider>
         </Router>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 }
 

@@ -36,7 +36,7 @@ export default function CreateCar() {
     await createCar(fd);
   }
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Body>
         <h2 className="text-center mb-4">Formulaire Nouvelle Voiture</h2>
         <Form>
@@ -92,7 +92,7 @@ export default function CreateCar() {
             <Form.Label>Photos</Form.Label>
             <Form.Control ref={picturesRef} type="file" multiple />
           </Form.Group>
-          <Button onClick={handleSubmit} className="w-100 mt-3">
+          <Button onClick={handleSubmit} className="w-100 mt-3" variant="dark">
             Create
           </Button>
         </Form>

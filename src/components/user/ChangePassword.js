@@ -27,7 +27,7 @@ export default function ChangePassword() {
     });
   }
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header className="text-center">
         <h2>Modifier Mot de Passe </h2>
       </Card.Header>
@@ -57,7 +57,11 @@ export default function ChangePassword() {
               value={confirmPassword}
             />
           </FormGroup>
-          <Button className="mt-2 w-100" onClick={modifyBtnClicked}>
+          <Button
+            variant="dark"
+            className="mt-2 w-100"
+            onClick={modifyBtnClicked}
+          >
             Modifier
           </Button>
         </Form>

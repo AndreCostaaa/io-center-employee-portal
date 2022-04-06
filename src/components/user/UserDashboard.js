@@ -46,6 +46,7 @@ export default function UserDashboard() {
           />
         )}
         <Button
+          variant="dark"
           className="w-100 mt-2"
           onClick={() => setCreatingUser(!creatingUser)}
         >

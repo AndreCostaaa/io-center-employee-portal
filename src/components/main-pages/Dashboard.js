@@ -27,7 +27,7 @@ export default function Dashboard() {
   return (
     <>
       {user ? (
-        <Card>
+        <Card className="bg-transparent">
           <Card.Header>
             <h2 className="text-center">Dashboard</h2>
           </Card.Header>
@@ -38,6 +38,7 @@ export default function Dashboard() {
             <Button
               onClick={() => navigate("/new")}
               className="w-100 mt-2 border"
+              variant="dark"
             >
               Démarrer
             </Button>
@@ -45,6 +46,7 @@ export default function Dashboard() {
               <Button
                 onClick={() => navigate("/admin-portal")}
                 className="w-100 mt-2 border"
+                variant="dark"
               >
                 Portal Admin
               </Button>
@@ -57,10 +59,12 @@ export default function Dashboard() {
               }}
               className="w-100 mt-2 border"
               as={Col}
+              variant="dark"
             >
               Modifier Mot de Passe
             </Button>
             <Button
+              variant="dark"
               onClick={() => {
                 logout();
                 navigate("/login");

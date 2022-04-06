@@ -20,7 +20,7 @@ export default function SelectCar() {
     fetchData();
   }, []);
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Voiture</h2>
       </Card.Header>
@@ -28,7 +28,11 @@ export default function SelectCar() {
         <DisplayCars cars={clientCars} />
 
         {!creatingCar && (
-          <Button className="w-100 mt-2" onClick={() => setCreatingCar(true)}>
+          <Button
+            variant="dark"
+            className="w-100 mt-2"
+            onClick={() => setCreatingCar(true)}
+          >
             Nouvelle voiture
           </Button>
         )}

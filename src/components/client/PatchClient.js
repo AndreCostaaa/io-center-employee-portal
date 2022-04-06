@@ -41,7 +41,7 @@ export default function PatchClient({ setModifyingClient }) {
 
   return (
     <>
-      <Card>
+      <Card className="bg-transparent">
         <Card.Header>
           <h2 className="text-center">Client</h2>
         </Card.Header>
@@ -124,10 +124,11 @@ export default function PatchClient({ setModifyingClient }) {
               </Form.Group>
             </Row>
           </Form>
-          <Button className="w-100 mt-3" onClick={handleUpdate}>
+          <Button variant="dark" className="w-100 mt-3" onClick={handleUpdate}>
             Modifier
           </Button>
           <Button
+            variant="dark"
             onClick={() => setModifyingClient(false)}
             className="w-100 mt-1"
           >

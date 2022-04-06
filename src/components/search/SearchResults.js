@@ -45,10 +45,11 @@ export default function SearchResults() {
         </tbody>
       </Table>
       {id ? (
-        <Card className="mt-2">
+        <Card className="mt-2 bg-transparent">
           <Card.Body>
             <Row className="gx-1">
               <Button
+                variant="dark"
                 onClick={() => {
                   navigate("/detail-page");
                 }}
@@ -56,7 +57,7 @@ export default function SearchResults() {
               >
                 Détails
               </Button>
-              <Button onClick={() => {}} className="w-50 border">
+              <Button variant="dark" onClick={() => {}} className="w-50 border">
                 Nouveau Service
               </Button>
             </Row>

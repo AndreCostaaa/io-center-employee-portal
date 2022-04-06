@@ -22,13 +22,14 @@ export default function DetailClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creating]);
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
         <h2>Service</h2>
       </Card.Header>
       {visible ? (
         <Card.Body>
           <Button
+            variant="dark"
             className="w-100"
             onClick={() => {
               setCreating(!creating);
@@ -38,19 +39,13 @@ export default function DetailClient() {
           </Button>
           {creating && <CreateService setCreating={setCreating} />}
           <Button
+            variant="dark"
             className="w-100 mt-2"
             onClick={() => setShowingHistory(!showingHistory)}
           >
             {showingHistory ? "Cacher Historique" : "Regarder Historique"}
           </Button>
-          {showingHistory && (
-            <Button
-              className="mt-2 w-100 text-center"
-              onClick={fetchServicesData}
-            >
-              Refresh
-            </Button>
-          )}
+
           {showingHistory ? (
             servicesArr.length > 0 ? (
               servicesArr

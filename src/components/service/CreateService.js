@@ -61,7 +61,7 @@ export default function CreateService({ setCreating }) {
     <h1> Loading </h1>
   ) : (
     <>
-      <Card>
+      <Card className="bg-transparent">
         <Card.Header>
           <h2 className="text-center">Nouveau Service</h2>
         </Card.Header>
@@ -144,9 +144,9 @@ export default function CreateService({ setCreating }) {
                 <Form.Control ref={filesRef} type="file" multiple />
               </Form.Group>
               <Button
+                variant="dark"
                 onClick={handleSubmit}
                 className="w-100 mt-3"
-                type="submit"
               >
                 Submit
               </Button>

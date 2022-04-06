@@ -4,9 +4,9 @@ import { useData } from "contexts/DataContext";
 
 export default function DetailClient({ setModifyingClient }) {
   const { clientSelected, setClientSelected, setCarSelected } = useData();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header className="text-center" onClick={() => setVisible(!visible)}>
         <h2>Client</h2>
       </Card.Header>
@@ -40,12 +40,14 @@ export default function DetailClient({ setModifyingClient }) {
           </Table>
           <div className="gx-1">
             <Button
+              variant="dark"
               className="w-100 border"
               onClick={() => setModifyingClient(true)}
             >
               Modifier ce Client
             </Button>
             <Button
+              variant="dark"
               className="w-100 mt-2 border"
               onClick={() => {
                 setClientSelected(null);

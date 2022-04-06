@@ -34,7 +34,7 @@ export default function UserList({ users, setDataChanged }) {
     }
   }, [userHovered]);
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Utilisateurs Existants</h2>
       </Card.Header>
@@ -67,10 +67,18 @@ export default function UserList({ users, setDataChanged }) {
         )}
         {userHovered && (
           <div className="gx 1">
-            <Button className="border w-50" onClick={btnDeletePressed}>
+            <Button
+              variant="dark"
+              className="border w-50"
+              onClick={btnDeletePressed}
+            >
               Supprimer
             </Button>
-            <Button className="border w-50" onClick={btnDeletePressed}>
+            <Button
+              variant="dark"
+              className="border w-50"
+              onClick={btnDeletePressed}
+            >
               Modifier
             </Button>
           </div>

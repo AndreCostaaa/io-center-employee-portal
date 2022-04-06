@@ -59,7 +59,7 @@ export default function PatchCar({ setModifyingCar }) {
     setModifyingCar(false);
   }
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Body>
         <h2 className="text-center mb-4">Formulaire Nouvelle Voiture</h2>
         <Form>
@@ -127,10 +127,14 @@ export default function PatchCar({ setModifyingCar }) {
             <Form.Control ref={registrationPictureRef} type="file" />
           </Form.Group>
 
-          <Button onClick={handleSubmit} className="w-100 mt-3">
+          <Button variant="dark" onClick={handleSubmit} className="w-100 mt-3">
             Modifier
           </Button>
-          <Button onClick={() => setModifyingCar(false)} className="w-100 mt-1">
+          <Button
+            variant="dark"
+            onClick={() => setModifyingCar(false)}
+            className="w-100 mt-1"
+          >
             Annuler
           </Button>
         </Form>

@@ -16,7 +16,7 @@ export default function ToolList({ toolList, setFetchData }) {
   }
 
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Liste d'outils</h2>
       </Card.Header>
@@ -40,7 +40,7 @@ export default function ToolList({ toolList, setFetchData }) {
           </tbody>
         </Table>
         {toolHovered && (
-          <Button className="w-100" onClick={deleteBtnClicked}>
+          <Button variant="dark" className="w-100" onClick={deleteBtnClicked}>
             Supprimer Outil
           </Button>
         )}

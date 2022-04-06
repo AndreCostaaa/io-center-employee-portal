@@ -19,7 +19,7 @@ export default function ToolForm({ setFetchData }) {
     });
   }
   return (
-    <Card>
+    <Card className="bg-transparent">
       <Card.Header>
         <h2 className="text-center">Nouveau Outil</h2>
       </Card.Header>
@@ -35,7 +35,11 @@ export default function ToolForm({ setFetchData }) {
               />
             </Form.Group>
           </Row>
-          <Button className="w-100 mt-2 border" onClick={createBtnClicked}>
+          <Button
+            variant="dark"
+            className="w-100 mt-2 border"
+            onClick={createBtnClicked}
+          >
             Nouveau
           </Button>
         </Form>

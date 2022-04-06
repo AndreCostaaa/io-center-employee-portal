@@ -37,6 +37,7 @@ export default function Login() {
     }
     setInfo("Logging in...");
     setInfoType("info");
+
     let response = await login(username, password);
     if (response.status === 200) {
       setInfo("Login successful. Redirecting...");
@@ -50,7 +51,7 @@ export default function Login() {
 
   return (
     <>
-      <Card>
+      <Card className="bg-transparent">
         <Card.Body>
           <h2 className="text-center mb-4">Login</h2>
           {info && <Alert variant={infoType}>{info}</Alert>}
@@ -71,7 +72,12 @@ export default function Login() {
                 required
               ></Form.Control>
             </Form.Group>
-            <Button onClick={onClick} className="w-100 mt-2" type="submit">
+            <Button
+              variant="dark"
+              onClick={onClick}
+              className="w-100 mt-2"
+              type="submit"
+            >
               Login
             </Button>
           </Form>

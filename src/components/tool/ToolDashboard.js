@@ -24,7 +24,7 @@ export default function ToolDashboard() {
   }, [fetchData]);
 
   return (
-    <Card>
+    <Card className="bg-transparent">
       <ToolForm setFetchData={setFetchData} />
       <ToolList toolList={toolList} setFetchData={setFetchData} />
     </Card>
