@@ -8,10 +8,10 @@ export default function PatchCar({ setModifyingCar }) {
     patchCar,
     setCarSelected,
     getCarRegistrationImageById,
+    setCarRegistrationImage,
   } = useData();
 
   const [modifyingRegPic, setModifyingRegPic] = useState(false);
-  const [carRegistrationImage, setCarRegistrationImage] = useState();
   const registrationPictureRef = useRef();
   const [brand, setBrand] = useState(carSelected.brand);
   const [model, setModel] = useState(carSelected.model);
@@ -26,12 +26,14 @@ export default function PatchCar({ setModifyingCar }) {
   useEffect(() => {
     const fetchData = async () => {
       await getCarRegistrationImageById(carSelected.id).then((res) => {
-        if (res.status) {
+        if (res.status === 200) {
           setCarRegistrationImage(res.message);
         }
       });
     };
-    fetchData();
+    if (!carSelected.registrationImage) {
+      fetchData();
+    }
   }, []);
   async function handleSubmit(e) {
     e.preventDefault();
@@ -115,7 +117,7 @@ export default function PatchCar({ setModifyingCar }) {
           </Form.Group>
           <div className="text-center mt-4">
             <img
-              src={carRegistrationImage}
+              src={carSelected.registrationImage}
               max-width="700"
               height="200"
               alt="Carte grise non trouvée"

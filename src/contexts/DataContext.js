@@ -9,20 +9,25 @@ export function useData() {
 export default function DataProvider({ children }) {
   const { getToken } = useAuth();
   const [carSelected, setCarSelected] = useState(null);
-  const [searchResults, setSearchResults] = useState(null);
   const [clientSelected, setClientSelected] = useState(null);
+  const [serviceList, setServiceList] = useState([]);
   useEffect(() => {
     localStorage.setItem("client-selected", JSON.stringify(clientSelected));
     localStorage.setItem("car-selected", JSON.stringify(carSelected));
-  }, [clientSelected, carSelected]);
+    localStorage.setItem("service-list", JSON.stringify(serviceList));
+  }, [clientSelected, carSelected, serviceList]);
 
-  function updateClientAndCarFromLocalStorage() {
+  function getDataFromLocalStorage() {
     if (localStorage.getItem("client-selected")) {
       setClientSelected(JSON.parse(localStorage.getItem("client-selected")));
     }
 
     if (localStorage.getItem("car-selected")) {
       setCarSelected(JSON.parse(localStorage.getItem("car-selected")));
+    }
+
+    if (localStorage.getItem("service-list")) {
+      setServiceList(JSON.parse(localStorage.getItem("service-list")));
     }
   }
   function getBearerAuthConfig() {
@@ -400,7 +405,7 @@ export default function DataProvider({ children }) {
     let message;
     switch (res.status) {
       case 200:
-        message = window.URL.createObjectURL(res.data);
+        message = URL.createObjectURL(res.data);
         break;
       case 404:
         message = "No Data";
@@ -499,6 +504,25 @@ export default function DataProvider({ children }) {
         break;
     }
 
+    return { status: res.status, message: message };
+  }
+  async function createServiceType(data) {
+    const config = getPostHeaders();
+    console.log(process.env.REACT_APP_API_SERVICE_TYPE_END_POINT);
+    const res = await api_post(
+      process.env.REACT_APP_API_SERVICE_TYPE_END_POINT,
+      data,
+      config
+    );
+    let message;
+    switch (res.status) {
+      case 201:
+        message = res.data;
+        break;
+      default:
+        message = "Error occured. Try again";
+        break;
+    }
     return { status: res.status, message: message };
   }
   async function getAllCars() {
@@ -623,7 +647,6 @@ export default function DataProvider({ children }) {
     );
 
     let message;
-    console.log(res);
     switch (res.status) {
       case 200:
         message = "Deleted";
@@ -672,18 +695,118 @@ export default function DataProvider({ children }) {
     }
     return { status: res.status, message: message };
   }
+
+  async function getAllServiceTypes() {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+    };
+    const res = await api_get(
+      process.env.REACT_APP_API_SERVICE_TYPE_END_POINT,
+      config
+    );
+    let message = "";
+    switch (res.status) {
+      case 200:
+        message = res.data;
+        break;
+      case 401:
+        message = "Session expired. Log in";
+        break;
+      case 500:
+        message = "Server Error. Try again";
+        break;
+      default:
+        message = "Unknown Error. Try again";
+        break;
+    }
+    return { status: res.status, message: message };
+  }
+  async function deleteServiceType(id) {
+    const headers = getBearerAuthConfig();
+    const config = {
+      headers: headers.headers,
+      params: {
+        id: id,
+      },
+    };
+
+    const res = await api_delete(
+      process.env.REACT_APP_API_SERVICE_TYPE_END_POINT,
+      config
+    );
+
+    let message;
+    switch (res.status) {
+      case 200:
+        message = "Deleted";
+        break;
+      case 404:
+        message = "No Data";
+        break;
+      case 500:
+        message = "Server Error";
+        break;
+      default:
+        message = "Unknown Error";
+        break;
+    }
+
+    return { status: res.status, message: message };
+  }
+
+  function setCarRegistrationImage(image) {
+    setCarSelected((prevState) => {
+      const newState = { ...prevState };
+      newState.registrationImage = image;
+      return newState;
+    });
+  }
+  function setLastServiceData(date, km) {
+    setCarSelected((prevState) => {
+      const newState = { ...prevState };
+      newState.lastServiceDate = date;
+      newState.kmAtLastService = km;
+      return newState;
+    });
+  }
+  function addPicturesToService(id, pictures) {
+    setServiceList((prevState) => {
+      const newState = prevState;
+
+      newState[id - 1].pictureList = pictures;
+
+      return newState;
+    });
+  }
+  function addMechanicNameToService(id, name) {
+    setServiceList((prevState) => {
+      const newState = prevState;
+
+      newState[id - 1].mechanicName = name;
+      return newState;
+    });
+  }
+  function addMachineNameToService(id, machine) {
+    setServiceList((prevState) => {
+      const newState = prevState;
+      newState[id - 1].machineName = machine;
+      return newState;
+    });
+  }
+
   const value = {
     setCarSelected,
-    searchResults,
-    setSearchResults,
     createClient,
     clientSelected,
     carSelected,
+    setServiceList,
+    serviceList,
     setClientSelected,
     getAllClients,
     getCarsFromClient,
     getServicesDone,
-    updateClientAndCarFromLocalStorage,
+    getDataFromLocalStorage,
     createCar,
     getCarRegistrationImageById,
     createService,
@@ -703,7 +826,15 @@ export default function DataProvider({ children }) {
     getAllUsers,
     deleteUser,
     createUser,
-    getServicePictureById
+    getServicePictureById,
+    getAllServiceTypes,
+    createServiceType,
+    deleteServiceType,
+    setCarRegistrationImage,
+    setLastServiceData,
+    addPicturesToService,
+    addMechanicNameToService,
+    addMachineNameToService,
   };
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

@@ -9,12 +9,11 @@ export default function DetailCar({ setModifyingCar }) {
     getCarRegistrationImageById,
     getCarFilesById,
     getCarMediaById,
+    setCarRegistrationImage,
   } = useData();
   const [visible, setVisible] = useState(true);
   const [showingRegistrationImage, setShowingRegistrationImage] =
     useState(false);
-
-  const [carRegistrationImage, setCarRegistrationImage] = useState();
   useEffect(() => {
     const fetchData = async () => {
       await getCarRegistrationImageById(carSelected.id).then((res) => {
@@ -23,7 +22,9 @@ export default function DetailCar({ setModifyingCar }) {
         }
       });
     };
-    fetchData();
+    if (!carSelected.registrationImage) {
+      fetchData();
+    }
   }, [getCarRegistrationImageById, carSelected.id]);
 
   async function downloadCarFiles() {
@@ -79,17 +80,32 @@ export default function DetailCar({ setModifyingCar }) {
                 </td>
               </tr>
               <tr>
+                <th>No Chassis</th>
+                <th>Recéption par type:</th>
+              </tr>
+              <tr>
+                <td>{carSelected.chassis_no.toUpperCase()}</td>
+                <td>{carSelected.reception_type.toUpperCase()}</td>
+              </tr>
+
+              <tr>
+                <th>Arrivé au Garage</th>
+                <th>Dernier Service Effectué</th>
+              </tr>
+              <tr>
                 <td>
-                  <h6>
-                    {"No Chassis:"} <br />
-                    {carSelected.chassis_no.toUpperCase()}
-                  </h6>
+                  {carSelected.date_created.split(" ")[0] +
+                    " | " +
+                    carSelected.km_at_arrival +
+                    " Km"}
                 </td>
                 <td>
-                  <h6>
-                    {"Recéption par type:"} <br />
-                    {carSelected.reception_type.toUpperCase()}
-                  </h6>
+                  {carSelected.lastServiceDate
+                    ? carSelected.lastServiceDate.split(" ")[0] +
+                      " | " +
+                      carSelected.kmAtLastService +
+                      " Km"
+                    : "Aucun Service Effectué"}
                 </td>
               </tr>
             </tbody>
@@ -109,14 +125,14 @@ export default function DetailCar({ setModifyingCar }) {
                   variant="dark"
                   onClick={downloadCarMedia}
                 >
-                  Télécharger Photos
+                  Télécharger Images
                 </Button>
               </div>
             </Row>
             <div className="text-center">
               {showingRegistrationImage ? (
                 <img
-                  src={carRegistrationImage}
+                  src={carSelected.registrationImage}
                   max-width="700"
                   height="200"
                   alt="Carte grise non trouvée"

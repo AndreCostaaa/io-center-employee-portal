@@ -4,6 +4,7 @@ import { useData } from "contexts/DataContext";
 export default function CreateCar() {
   const registrationPictureRef = useRef();
   const picturesRef = useRef();
+  const kmRef = useRef();
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [date, setDate] = useState("");
@@ -17,6 +18,10 @@ export default function CreateCar() {
     let carte_grise = registrationPictureRef.current.files[0];
     if (!carte_grise) {
       registrationPictureRef.current.focus();
+      return;
+    }
+    if (!kmRef.current.value) {
+      kmRef.current.focus();
       return;
     }
     let pictures = picturesRef.current.files;
@@ -33,6 +38,7 @@ export default function CreateCar() {
     fd.append("chassis_no", chassisNo);
     fd.append("reception_type", receptionType);
     fd.append("owner_id", clientSelected.id);
+    fd.append("km", kmRef.current.value);
     await createCar(fd);
   }
   return (
@@ -82,6 +88,15 @@ export default function CreateCar() {
             <Form.Control
               type="date"
               onChange={(e) => setDate(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Km</Form.Label>
+            <Form.Control
+              className="w-100"
+              type="number"
+              min="0"
+              ref={kmRef}
             ></Form.Control>
           </Form.Group>
           <Form.Group>

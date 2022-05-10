@@ -33,7 +33,7 @@ export default function UserDashboard() {
     }
   }, [getCurrentUser, navigate]);
   return (
-    <>
+    <div>
       <div>
         <UserList users={userList} setDataChanged={setFetchData} />
       </div>
@@ -53,6 +53,6 @@ export default function UserDashboard() {
           {!creatingUser ? "Créer Utilisateur" : "Annuler"}
         </Button>
       </div>
-    </>
+    </div>
   );
 }

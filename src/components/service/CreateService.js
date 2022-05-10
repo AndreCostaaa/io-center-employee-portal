@@ -16,11 +16,18 @@ export default function CreateService({ setCreating }) {
   const [description, setDescription] = useState("");
   const [servicesList, setServicesList] = useState([]);
   const [machineList, setMachineList] = useState([]);
-  const { createService, carSelected, getMachineList } = useData();
+  const [serviceTypeList, setServiceTypeList] = useState([]);
+  const { createService, carSelected, getMachineList, getAllServiceTypes } =
+    useData();
   const { getCurrentUser } = useAuth();
   useEffect(() => {
     setServicesList(["Service", "Installation", "Réparation", "Optimisation"]);
     async function fetchData() {
+      await getAllServiceTypes().then((res) => {
+        if (res.status === 200) {
+          setServiceTypeList(res.message);
+        }
+      });
       await getMachineList().then((res) => {
         if (res.status === 200) {
           setMachineList(res.message);
@@ -66,38 +73,36 @@ export default function CreateService({ setCreating }) {
           <h2 className="text-center">Nouveau Service</h2>
         </Card.Header>
         <Card.Body>
-          <DropdownButton
-            drop="end"
-            className="text-center"
-            title="Type de Service"
-          >
-            {servicesList.map((service, i) => (
-              <Dropdown.Item key={i} onClick={() => setService(service)}>
-                {service}
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
-          <h4 className="text-center mt-2">{service}</h4>
-          {service === "Optimisation" ? (
-            <>
-              <DropdownButton
-                drop="end"
-                className="text-center mt-1 mb-1"
-                title="Machine utilisée"
-              >
-                {machineList.map((machine, i) => (
-                  <Dropdown.Item key={i} onClick={() => setMachine(machine)}>
-                    {machine.name}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
-              <h4 className="text-center mt-2">
-                {machine ? machine.name : ""}
-              </h4>
-            </>
-          ) : (
-            ""
-          )}
+          <Form.Group>
+            <Form.Label>Type de Service</Form.Label>
+
+            <Form.Select
+              onChange={(e) => setService(e.target.value.toLowerCase())}
+              defaultValue="none"
+            >
+              <option value="none" disabled hidden>
+                Choisir Type de Service
+              </option>
+              {serviceTypeList.map((service, idx) => {
+                return <option key={idx}>{service.name}</option>;
+              })}
+            </Form.Select>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Machine de Lecture Utilisée</Form.Label>
+            <Form.Select
+              onChange={(e) => setMachine(e.target.value.toLowerCase())}
+              defaultValue={"none"}
+            >
+              <option value="none" disabled hidden>
+                Choisir Machine
+              </option>
+              {machineList.map((machine, idx) => {
+                return <option key={idx}>{machine.name}</option>;
+              })}
+            </Form.Select>
+          </Form.Group>
+          <h4 className="text-center mt-2">{machine ? machine.name : ""}</h4>
           {service ? (
             <Form>
               <Form.Group className="mt-2">

@@ -17,17 +17,18 @@ export default function MainPage() {
   const {
     clientSelected,
     carSelected,
-    updateClientAndCarFromLocalStorage,
+    getDataFromLocalStorage,
     setClientSelected,
     getClientById,
   } = useData();
 
   useEffect(() => {
-    updateClientAndCarFromLocalStorage();
+    getDataFromLocalStorage();
   }, []);
 
   useEffect(() => {
     let idx = 0;
+
     if (clientSelected) {
       idx = 1;
     }

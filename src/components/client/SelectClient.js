@@ -157,16 +157,6 @@ export default function SelectClient() {
               ></Form.Control>
             </Form.Group>
             <Row>
-              <div className="w-75">
-                <Form.Group as={Col}>
-                  <Form.Label>Localité</Form.Label>
-                  <Form.Control
-                    type="text"
-                    onChange={(e) => setCity(e.target.value)}
-                    ref={addToRefs}
-                  ></Form.Control>
-                </Form.Group>
-              </div>
               <Form.Group className="w-25" as={Col}>
                 <Form.Label>NPA</Form.Label>
                 <Form.Control
@@ -177,6 +167,14 @@ export default function SelectClient() {
                     }
                   }}
                   value={npa}
+                  ref={addToRefs}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="w-75" as={Col}>
+                <Form.Label>Localité</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setCity(e.target.value)}
                   ref={addToRefs}
                 ></Form.Control>
               </Form.Group>

@@ -23,7 +23,14 @@ export default function AdminPortal() {
           onClick={() => navigate("/tool")}
           className="w-100 mt-2 border"
         >
-          Gèrer outils
+          Customiser Outils
+        </Button>
+        <Button
+          variant="dark"
+          onClick={() => navigate("/service-type")}
+          className="w-100 mt-2 border"
+        >
+          Customiser Services
         </Button>
         <Button
           variant="dark"
